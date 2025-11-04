@@ -10,10 +10,7 @@ class CounterView extends GetView<CounterController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Counter'),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: const Text('Counter'), centerTitle: true),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(24.0),

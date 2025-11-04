@@ -18,10 +18,7 @@ class CounterView extends StatelessWidget {
     final controller = Get.find<CounterController>();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Counter'),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: const Text('Counter'), centerTitle: true),
       body: Obx(() {
         if (controller.isLoading.value) {
           return const Center(child: CircularProgressIndicator());
