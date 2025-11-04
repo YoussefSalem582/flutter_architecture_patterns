@@ -16,7 +16,8 @@ class CounterView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Counter Screen'),
+        title: const Text('Counter'),
+        centerTitle: true,
         actions: [
           // Theme toggle button
           Obx(
@@ -27,12 +28,6 @@ class CounterView extends StatelessWidget {
               onPressed: () => themeController.toggleTheme(),
               tooltip: 'Toggle Theme',
             ),
-          ),
-          // Navigate to Notes screen
-          IconButton(
-            icon: const Icon(Icons.note_alt_outlined),
-            onPressed: () => Get.toNamed('/notes'),
-            tooltip: 'Go to Notes',
           ),
         ],
       ),

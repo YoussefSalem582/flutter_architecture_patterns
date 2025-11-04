@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'controllers/theme_controller.dart';
+import 'views/home_view.dart';
 import 'views/counter_view.dart';
 import 'views/notes_view.dart';
 
@@ -21,7 +22,7 @@ class CounterNotesApp extends StatelessWidget {
 
     return Obx(
       () => GetMaterialApp(
-        title: 'Counter Notes App',
+        title: 'Counter Notes App - MVC',
         debugShowCheckedModeBanner: false,
 
         // Theme configuration - reactive theme switching
@@ -32,8 +33,14 @@ class CounterNotesApp extends StatelessWidget {
         getPages: [
           GetPage(
             name: '/',
-            page: () => const CounterView(),
+            page: () => const HomeView(),
             transition: Transition.fadeIn,
+            transitionDuration: const Duration(milliseconds: 300),
+          ),
+          GetPage(
+            name: '/counter',
+            page: () => const CounterView(),
+            transition: Transition.rightToLeft,
             transitionDuration: const Duration(milliseconds: 300),
           ),
           GetPage(

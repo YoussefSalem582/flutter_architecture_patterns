@@ -19,7 +19,7 @@ class CounterView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Counter - DDD Pattern'),
+        title: const Text('Counter'),
         centerTitle: true,
       ),
       body: Obx(() {

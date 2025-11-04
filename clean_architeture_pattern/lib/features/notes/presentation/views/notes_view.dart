@@ -14,7 +14,7 @@ class NotesView extends GetView<NotesController> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Notes - Clean Architecture'),
+        title: const Text('Notes'),
         centerTitle: true,
         actions: [
           IconButton(

@@ -11,7 +11,7 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Clean Architecture Pattern'),
+        title: const Text('Counter Notes App'),
         centerTitle: true,
         actions: [
           IconButton(
@@ -67,7 +67,7 @@ class HomeView extends StatelessWidget {
               _FeatureCard(
                 icon: Icons.note,
                 title: 'Notes',
-                description: 'Add, delete, and list text notes',
+                description: 'Add, view, and delete text notes',
                 color: Colors.green,
                 onTap: () => Get.toNamed(AppRoutes.notes),
               ),

@@ -18,7 +18,7 @@ class NotesView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Notes - DDD Pattern'),
+        title: const Text('Notes'),
         centerTitle: true,
         actions: [
           IconButton(

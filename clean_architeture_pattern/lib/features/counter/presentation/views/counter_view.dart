@@ -11,7 +11,7 @@ class CounterView extends GetView<CounterController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Counter - Clean Architecture'),
+        title: const Text('Counter'),
         centerTitle: true,
       ),
       body: Center(

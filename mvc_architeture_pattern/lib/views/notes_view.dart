@@ -17,7 +17,8 @@ class NotesView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Notes Screen'),
+        title: const Text('Notes'),
+        centerTitle: true,
         actions: [
           // Theme toggle button
           Obx(
