@@ -13,7 +13,7 @@
 | **Counter Feature** | ✅ Yes | ✅ Yes | ✅ Yes | ✅ Yes |
 | **Notes Feature** | ✅ Yes | ✅ Yes | ✅ Yes | ✅ Yes |
 | **Theme Toggle** | ✅ Yes | ✅ Yes | ✅ Yes | ✅ Yes |
-| **Persistence** | ❌ In-Memory | ✅ GetStorage | ✅ GetStorage | ✅ GetStorage |
+| **Persistence** | ✅ GetStorage | ✅ GetStorage | ✅ GetStorage | ✅ GetStorage |
 | **State Management** | GetX | GetX | GetX | GetX |
 | **Testability** | ⭐⭐ Moderate | ⭐⭐⭐ Good | ⭐⭐⭐⭐ Excellent | ⭐⭐⭐⭐⭐ Best |
 | **Scalability** | ⭐⭐ Small-Medium | ⭐⭐⭐ Medium-Large | ⭐⭐⭐⭐ Large | ⭐⭐⭐⭐⭐ Enterprise |

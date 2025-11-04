@@ -1,9 +1,17 @@
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import '../models/note_model.dart';
 
 /// Controller for Notes functionality
 /// Manages notes list and business logic using GetX
+/// Uses GetStorage for data persistence across app restarts
 class NotesController extends GetxController {
+  // GetStorage instance for persistence
+  final _storage = GetStorage();
+
+  // Storage key for notes list
+  static const String _notesKey = 'notes_list';
+
   // Reactive list of notes
   final _notes = <NoteModel>[].obs;
 
@@ -19,11 +27,30 @@ class NotesController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // Add some sample notes for demonstration
-    _addSampleNotesQuietly();
+    // Load saved notes from storage
+    _loadNotes();
   }
 
-  /// Add sample notes without notifications
+  /// Load notes from storage
+  void _loadNotes() {
+    final savedNotes = _storage.read<List>(_notesKey);
+    if (savedNotes != null && savedNotes.isNotEmpty) {
+      _notes.value = savedNotes
+          .map((json) => NoteModel.fromJson(Map<String, dynamic>.from(json)))
+          .toList();
+    } else {
+      // Add sample notes only if no saved notes exist
+      _addSampleNotesQuietly();
+    }
+  }
+
+  /// Save notes to storage
+  Future<void> _saveNotes() async {
+    final notesJson = _notes.map((note) => note.toJson()).toList();
+    await _storage.write(_notesKey, notesJson);
+  }
+
+  /// Add sample notes without notifications (only on first run)
   void _addSampleNotesQuietly() {
     final note1 = NoteModel(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
@@ -34,6 +61,7 @@ class NotesController extends GetxController {
       content: 'This app demonstrates MVC pattern with GetX',
     );
     _notes.addAll([note1, note2]);
+    _saveNotes(); // Save sample notes
   }
 
   /// Add a new note
@@ -53,6 +81,7 @@ class NotesController extends GetxController {
     );
 
     _notes.add(note);
+    _saveNotes(); // Persist to storage
     Get.snackbar(
       'Success',
       'Note added successfully',
@@ -64,6 +93,7 @@ class NotesController extends GetxController {
   /// Delete a note by id
   void deleteNote(String id) {
     _notes.removeWhere((note) => note.id == id);
+    _saveNotes(); // Persist to storage
     Get.snackbar(
       'Deleted',
       'Note deleted successfully',
@@ -92,6 +122,7 @@ class NotesController extends GetxController {
       buttonColor: Get.theme.colorScheme.error,
       onConfirm: () {
         _notes.clear();
+        _saveNotes(); // Persist to storage
         Get.back();
         Get.snackbar(
           'Cleared',

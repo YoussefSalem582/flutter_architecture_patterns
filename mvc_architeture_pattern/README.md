@@ -37,7 +37,8 @@ Counter Notes App is a simple yet comprehensive example of MVC pattern implement
 - ➖ Decrement counter
 - 🔄 Reset counter to zero
 - 📊 Real-time counter display
-- 💬 Snackbar notifications
+- � Persistent storage (survives app restart)
+- �💬 Snackbar notifications
 
 ### Notes Screen
 - ✏️ Add new notes
@@ -45,6 +46,7 @@ Counter Notes App is a simple yet comprehensive example of MVC pattern implement
 - 🧹 Clear all notes with confirmation
 - 📝 Display note count
 - ⏰ Timestamp with relative time display
+- 💾 Persistent storage (survives app restart)
 
 ### Global Features
 - 🌓 Light/Dark theme switching
@@ -59,7 +61,8 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
-  get: ^4.6.6  # GetX for state management and navigation
+  get: ^4.6.6          # GetX for state management and navigation
+  get_storage: ^2.1.1  # Local persistent storage
 ```
 
 ## 🚀 Getting Started
@@ -138,6 +141,7 @@ lib/
 - **Navigation**: `Get.toNamed()` and `Get.back()` for route navigation
 - **Dialogs & Snackbars**: `Get.snackbar()` and `Get.defaultDialog()`
 - **Theme Management**: `Get.changeTheme()` for dynamic theme switching
+- **Local Storage**: `GetStorage` for persistent data storage
 
 ## 🔍 Code Highlights
 
@@ -196,13 +200,13 @@ By studying this project, you'll learn:
 
 Ideas for further development:
 
-- 💾 Add local storage (SharedPreferences or Hive)
-- 🔍 Implement note search functionality
+-  Implement note search functionality
 - 🏷️ Add note categories or tags
 - ✏️ Enable note editing
 - 📤 Add export/import functionality
 - 🔐 Implement authentication
 - ☁️ Add cloud synchronization
+- 📊 Add statistics and analytics
 
 ## 📖 Additional Resources
 

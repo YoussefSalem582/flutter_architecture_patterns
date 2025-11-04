@@ -31,6 +31,7 @@ This document explains how the MVC (Model-View-Controller) pattern is implemente
 │  │ - Business Logic     │   │  - Business Logic     │  │
 │  │ - State Management   │   │  - State Management   │  │
 │  │ - GetX Controller    │   │  - GetX Controller    │  │
+│  │ - GetStorage         │   │  - GetStorage         │  │
 │  └──────────┬───────────┘   └──────────┬────────────┘  │
 │             │ Updates                   │ Updates       │
 │  ┌──────────────────────────────────────────────────┐  │
@@ -50,6 +51,18 @@ This document explains how the MVC (Model-View-Controller) pattern is implemente
 │  │  - reset()       │      │    - toJson()       │    │
 │  └──────────────────┘      └─────────────────────┘    │
 │            Pure Data Classes - No Dependencies         │
+└─────────────┬───────────────────────┬───────────────────┘
+              │ Persisted via         │
+              ▼                       ▼
+┌─────────────────────────────────────────────────────────┐
+│                   STORAGE LAYER                         │
+│  ┌──────────────────────────────────────────────────┐  │
+│  │              GetStorage                          │  │
+│  │  - Saves counter value (int)                     │  │
+│  │  - Saves notes list (JSON)                       │  │
+│  │  - Persists data across app restarts            │  │
+│  └──────────────────────────────────────────────────┘  │
+│            Local Key-Value Storage                     │
 └─────────────────────────────────────────────────────────┘
 ```
 
@@ -60,10 +73,12 @@ This document explains how the MVC (Model-View-Controller) pattern is implemente
 1. **User Action**: User taps "Increment" button in `CounterView`
 2. **View → Controller**: View calls `counterController.increment()`
 3. **Controller → Model**: Controller updates `CounterModel.value`
-4. **Controller Updates State**: Controller calls `_counter.refresh()`
-5. **Controller → User**: Controller shows snackbar feedback
-6. **View Updates**: `Obx()` widget automatically rebuilds with new value
-7. **User Sees Change**: UI reflects the updated counter value
+4. **Controller → Storage**: Controller saves value to GetStorage
+5. **Controller Updates State**: Controller calls `_counter.refresh()`
+6. **Controller → User**: Controller shows snackbar feedback
+7. **View Updates**: `Obx()` widget automatically rebuilds with new value
+8. **User Sees Change**: UI reflects the updated counter value
+9. **Data Persists**: Counter value survives app restart
 
 ### Notes Feature Flow
 
@@ -72,9 +87,19 @@ This document explains how the MVC (Model-View-Controller) pattern is implemente
 3. **Controller Validation**: Controller validates input
 4. **Controller → Model**: Controller creates new `NoteModel`
 5. **Controller Updates List**: Controller adds note to `_notes` list
-6. **Controller → User**: Controller shows success snackbar
-7. **View Updates**: `Obx()` widget rebuilds ListView with new note
-8. **User Sees Change**: UI shows the new note in the list
+6. **Controller → Storage**: Controller saves notes list to GetStorage (JSON)
+7. **Controller → User**: Controller shows success snackbar
+8. **View Updates**: `Obx()` widget rebuilds ListView with new note
+9. **User Sees Change**: UI shows the new note in the list
+10. **Data Persists**: Notes survive app restart
+
+### App Initialization Flow
+
+1. **main()**: App starts with `WidgetsFlutterBinding.ensureInitialized()`
+2. **Storage Init**: `await GetStorage.init()` initializes storage
+3. **App Starts**: `runApp()` launches the app
+4. **Controller Init**: Controllers load saved data in `onInit()`
+5. **UI Renders**: Views display persisted data
 
 ## 📦 Layer Responsibilities
 
@@ -146,19 +171,39 @@ class CounterView extends StatelessWidget {
 - ✅ Provides methods for views
 - ✅ Handles navigation
 - ✅ Shows dialogs/snackbars
+- ✅ Manages data persistence with GetStorage
 - ❌ No UI widgets
 - ❌ No direct BuildContext usage
 
-**Example - CounterController**:
+**Example - CounterController with Storage**:
 ```dart
 class CounterController extends GetxController {
+  final _storage = GetStorage();
   final _counter = CounterModel().obs;
   
   int get counterValue => _counter.value.value;
   
+  @override
+  void onInit() {
+    super.onInit();
+    _loadCounter(); // Load from storage
+  }
+  
+  void _loadCounter() {
+    final savedValue = _storage.read<int>('counter_value');
+    if (savedValue != null) {
+      _counter.value = CounterModel(value: savedValue);
+    }
+  }
+  
+  Future<void> _saveCounter() async {
+    await _storage.write('counter_value', counterValue);
+  }
+  
   void increment() {
     _counter.value.increment();
     _counter.refresh();
+    _saveCounter(); // Persist to storage
     Get.snackbar('Updated', 'Counter: $counterValue');
   }
 }
@@ -223,6 +268,25 @@ Get.defaultDialog(
 );
 ```
 
+### 5. Data Persistence
+
+**GetStorage Integration**:
+```dart
+final _storage = GetStorage();
+
+// Save data
+await _storage.write('key', value);
+
+// Read data
+final value = _storage.read<int>('key');
+
+// Save JSON
+await _storage.write('notes', notesJson);
+
+// Read JSON
+final json = _storage.read<List>('notes');
+```
+
 ## 🔧 Best Practices
 
 ### ✅ DO's
@@ -234,6 +298,9 @@ Get.defaultDialog(
 5. **Dependency Injection**: Use `Get.put()` and `Get.find()`
 6. **Named Routes**: Use GetX named routes for navigation
 7. **Controller Lifecycle**: Use `onInit()` and `onClose()` appropriately
+8. **Data Persistence**: Use GetStorage for local data persistence
+9. **Load on Init**: Load saved data in `onInit()` method
+10. **Save on Change**: Persist data after every state change
 
 ### ❌ DON'Ts
 

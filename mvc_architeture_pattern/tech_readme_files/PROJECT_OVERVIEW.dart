@@ -15,6 +15,7 @@ mvc_architeture_pattern/
 ├── 📁 lib/                                    [Application Source Code]
 │   │
 │   ├── 📄 main.dart                          [App Entry Point]
+│   │   • Initializes GetStorage (await GetStorage.init())
 │   │   • Initializes GetX app
 │   │   • Sets up navigation routes
 │   │   • Configures themes
@@ -40,19 +41,26 @@ mvc_architeture_pattern/
 │   │   │   ⚡ Extends GetxController
 │   │   │   ⚡ Contains business logic
 │   │   │   ⚡ Manages reactive state with .obs
+│   │   │   ⚡ Handles data persistence with GetStorage
 │   │   │   ⚡ No UI code
 │   │   │
 │   │   ├── 📄 counter_controller.dart        [Counter Business Logic]
 │   │   │   • class CounterController extends GetxController
 │   │   │   • Manages counter state
+│   │   │   • GetStorage instance for persistence
 │   │   │   • Methods: increment(), decrement(), reset()
+│   │   │   • _loadCounter() - Loads saved value on init
+│   │   │   • _saveCounter() - Saves value to storage
 │   │   │   • Shows snackbar notifications
 │   │   │   • Updates UI reactively
 │   │   │
 │   │   ├── 📄 notes_controller.dart          [Notes Business Logic]
 │   │   │   • class NotesController extends GetxController
 │   │   │   • Manages notes list (CRUD operations)
+│   │   │   • GetStorage instance for persistence
 │   │   │   • Methods: addNote(), deleteNote(), clearAllNotes()
+│   │   │   • _loadNotes() - Loads saved notes from storage (JSON)
+│   │   │   • _saveNotes() - Saves notes to storage (JSON)
 │   │   │   • Validates input
 │   │   │   • Shows dialogs and snackbars
 │   │   │
@@ -93,6 +101,7 @@ mvc_architeture_pattern/
 │
 ├── 📄 pubspec.yaml                            [Dependencies]
 │   • get: ^4.6.6 (GetX for state management)
+│   • get_storage: ^2.1.1 (Local persistence)
 │   • cupertino_icons: ^1.0.8
 │
 ├── 📄 README.md                               [Documentation]
@@ -169,9 +178,15 @@ KEY GETX FEATURES USED
    • Get.changeTheme()  → Switch theme dynamically
    • Get.theme          → Access current theme
 
+6. DATA PERSISTENCE
+   • GetStorage        → Local key-value storage
+   • .write()          → Save data to storage
+   • .read()           → Load data from storage
+   • .init()           → Initialize storage (async)
+
 
 ================================================================================
-DATA FLOW EXAMPLE: Adding a Note
+DATA FLOW EXAMPLE: Adding a Note (with Persistence)
 ================================================================================
 
 1. USER ACTION
@@ -187,10 +202,14 @@ DATA FLOW EXAMPLE: Adding a Note
    │  • content: "Buy milk"
    │  • createdAt: DateTime.now()
    ├─ Adds to _notes observable list
+   ├─ Saves to storage: _saveNotes()
+   │  └─ Converts notes to JSON
+   │  └─ Writes to GetStorage('notes_list')
    └─ Shows Get.snackbar("Success", "Note added")
 
 4. MODEL (note_model.dart)
    └─ NoteModel instance created with data
+   └─ toJson() method converts to Map
 
 5. VIEW AUTO-UPDATES
    └─ Obx() detects _notes change
@@ -199,6 +218,10 @@ DATA FLOW EXAMPLE: Adding a Note
 6. USER SEES RESULT
    └─ New note appears in list
    └─ Success snackbar shows
+
+7. DATA PERSISTS
+   └─ Note saved to local storage
+   └─ Survives app restart
 
 
 ================================================================================

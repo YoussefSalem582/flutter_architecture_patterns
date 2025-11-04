@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'controllers/theme_controller.dart';
 import 'views/home_view.dart';
 import 'views/counter_view.dart';
@@ -7,7 +8,13 @@ import 'views/notes_view.dart';
 
 /// Entry point of the Counter Notes App
 /// Demonstrates MVC pattern with GetX state management
-void main() {
+void main() async {
+  // Ensure Flutter binding is initialized
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize GetStorage for persistent data storage
+  await GetStorage.init();
+
   runApp(const CounterNotesApp());
 }
 

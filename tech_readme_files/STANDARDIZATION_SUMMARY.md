@@ -232,7 +232,7 @@ Home View (/)
 ## 📦 Persistence
 
 ### All Patterns Use:
-- **GetStorage** (key-value storage) - except MVC uses in-memory lists
+- **GetStorage** (key-value storage) for all patterns
 - **Persistent data** across app restarts
 - **JSON serialization** for complex objects
 

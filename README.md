@@ -19,7 +19,7 @@ A comprehensive collection of Flutter projects demonstrating **four different ar
 - ✅ Notes with add/view/delete
 - ✅ Theme toggle (dark/light)
 - ✅ Home view with navigation
-- ✅ Persistent storage (in-memory)
+- ✅ Persistent storage with GetStorage
 
 **Complexity:** ⭐ Simple | **Files:** ~10 | **Lines:** ~800
 
@@ -451,12 +451,14 @@ flutter test
 - **Flutter**: 3.9.2+
 - **Dart**: 3.9.2+
 - **GetX**: 4.7.2 (State management, routing, DI)
-
-### Clean & DDD Also Use:
 - **GetStorage**: 2.1.1 (Local persistence)
+
+### Clean & DDD Additionally Use:
 - **Dartz**: 0.10.1 (Functional programming)
 - **Equatable**: 2.0.7 (Value equality)
-- **UUID**: 4.5.2 (Unique identifiers - DDD only)
+
+### DDD Also Uses:
+- **UUID**: 4.5.2 (Unique identifiers)
 
 ---
 

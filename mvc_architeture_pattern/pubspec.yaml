@@ -37,6 +37,9 @@ dependencies:
   
   # GetX for state management and navigation
   get: ^4.6.6
+  
+  # GetStorage for local data persistence
+  get_storage: ^2.1.1
 
 dev_dependencies:
   flutter_test:
