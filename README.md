@@ -93,6 +93,32 @@ A comprehensive collection of Flutter projects demonstrating **four different ar
 
 ---
 
+## 🔄 State Management Options
+
+This repository provides **TWO complete implementations** of each pattern:
+
+### 📂 BLoC Folder (`/bloc/`)
+- **State Management**: BLoC/Cubit with flutter_bloc
+- **Persistence**: HydratedBloc
+- **Approach**: Stream-based reactive programming
+- **Best For**: Large teams, strict architecture, high testability
+
+### 📂 GetX Folder (`/getx/`)
+- **State Management**: GetX Controllers
+- **Persistence**: GetStorage
+- **Approach**: Observer pattern with reactive variables
+- **Best For**: Rapid development, smaller teams, simpler syntax
+
+**See:** [STATE_MANAGEMENT_COMPARISON.md](./tech_readme_files/STATE_MANAGEMENT_COMPARISON.md) for comprehensive comparison
+- 📊 Quick comparison & decision guide
+- 🏗️ Architecture deep dive (how they work)
+- 💻 Side-by-side code examples
+- ⚡ Performance benchmarks
+- 👨‍💻 Developer experience comparison
+- 🔄 Migration guides
+
+---
+
 ## 🎯 Why This Repository?
 
 ### ✨ Standardized Features
@@ -108,7 +134,15 @@ This allows you to:
 - 🎯 **Choose** the right pattern for your project
 - 💡 **Understand** trade-offs clearly
 
-### � Comprehensive Documentation
+### 📚 Comprehensive Documentation
+- **STATE_MANAGEMENT_COMPARISON.md** - BLoC vs GetX comparison (7 focused guides) ⭐ **NEW STRUCTURE**
+  - 01: Overview & Quick Comparison (5 min)
+  - 02: How They Work (10 min)
+  - 03: Architecture Integration (15 min)
+  - 04: Performance & Benchmarks (8 min)
+  - 05: Developer Experience (12 min)
+  - 06: Decision Guide (7 min)
+  - 07: Migration Guide (10 min)
 - **STANDARDIZATION_SUMMARY.md** - Complete standardization details
 - **COMPARISON_GUIDE.md** - In-depth pattern comparison
 - Each project has detailed README and code comments
@@ -117,7 +151,7 @@ This allows you to:
 - Clean, maintainable code
 - Best practices implementation
 - Zero compilation errors
-- GetX state management
+- Dual state management (BLoC & GetX)
 - Proper error handling
 
 ---
@@ -200,6 +234,8 @@ This allows you to:
 
 ## 📊 Quick Comparison
 
+### Architecture Patterns
+
 | Feature | MVC | MVVM | Clean | DDD |
 |---------|-----|------|-------|-----|
 | **Layers** | 3 | 3 | 3 | 4 |
@@ -209,7 +245,21 @@ This allows you to:
 | **Best For** | Small apps | Medium apps | Large apps | Enterprise |
 | **Testability** | Moderate | Good | Excellent | Best |
 
-See **COMPARISON_GUIDE.md** for detailed comparison.
+### State Management Solutions
+
+| Feature | BLoC | GetX |
+|---------|------|------|
+| **Learning Curve** | Steep (3-6 months) | Easy (1 month) |
+| **Code Amount** | More (Verbose) | Less (64% reduction) |
+| **Performance** | Excellent ⚡⚡⚡⚡⚡ | Excellent ⚡⚡⚡⚡⚡ |
+| **Memory Usage** | Lower (~68 MB) | Slightly Higher (~72 MB) |
+| **Testability** | Excellent (blocTest) | Good |
+| **Boilerplate** | High | Low |
+| **Type Safety** | Excellent | Good |
+| **DI & Routing** | External packages | Built-in |
+| **Best For** | Large teams, complex state | Rapid development, MVPs |
+
+See **[STATE_MANAGEMENT_COMPARISON.md](./tech_readme_files/STATE_MANAGEMENT_COMPARISON.md)** for detailed analysis.
 
 ---
 
@@ -447,18 +497,30 @@ flutter test
 
 ## 🛠️ Technology Stack
 
-### All Patterns Use:
+### Core Technologies (All Implementations):
 - **Flutter**: 3.9.2+
 - **Dart**: 3.9.2+
-- **GetX**: 4.7.2 (State management, routing, DI)
-- **GetStorage**: 2.1.1 (Local persistence)
 
-### Clean & DDD Additionally Use:
-- **Dartz**: 0.10.1 (Functional programming)
-- **Equatable**: 2.0.7 (Value equality)
+### State Management Options:
 
-### DDD Also Uses:
-- **UUID**: 4.5.2 (Unique identifiers)
+#### BLoC Folder (`/bloc/`):
+- **flutter_bloc**: 8.1.3 (State management)
+- **hydrated_bloc**: 9.1.2 (State persistence)
+- **bloc**: 8.1.2 (Core BLoC library)
+- **shared_preferences**: 2.2.2 (Local storage)
+- **equatable**: 2.0.5 (Value equality)
+- **dartz**: 0.10.1 (Functional programming - Clean & DDD only)
+
+#### GetX Folder (`/getx/`):
+- **get**: 4.6.6 (State management, routing, DI)
+- **get_storage**: 2.1.1 (Local persistence)
+- **equatable**: 2.0.5 (Value equality)
+- **dartz**: 0.10.1 (Functional programming - Clean & DDD only)
+- **uuid**: 4.2.1 (Unique identifiers - DDD only)
+
+### Additional Packages:
+- **cupertino_icons**: 1.0.8 (iOS-style icons)
+- **path_provider**: 2.1.1 (File paths - BLoC only)
 
 ---
 
@@ -490,12 +552,19 @@ By working through this repository, you will:
 
 ## 🚀 Quick Links
 
-- **Start Learning**: [GETTING_STARTED.md](./GETTING_STARTED.md)
-- **Best Practices**: [BEST_PRACTICES.md](./BEST_PRACTICES.md)
-- **Troubleshooting**: [TROUBLESHOOTING.md](./TROUBLESHOOTING.md)
-- **Resources**: [LEARNING_RESOURCES.md](./LEARNING_RESOURCES.md)
-- **Pattern Comparison**: [COMPARISON_GUIDE.md](./COMPARISON_GUIDE.md)
-- **Standardization**: [STANDARDIZATION_SUMMARY.md](./STANDARDIZATION_SUMMARY.md)
+### 📖 Essential Documentation
+- **Start Learning**: [GETTING_STARTED.md](./bloc/tech_readme_files/GETTING_STARTED.md)
+- **Best Practices**: [BEST_PRACTICES.md](./bloc/tech_readme_files/BEST_PRACTICES.md)
+- **Troubleshooting**: [TROUBLESHOOTING.md](./bloc/tech_readme_files/TROUBLESHOOTING.md)
+- **Resources**: [LEARNING_RESOURCES.md](./bloc/tech_readme_files/LEARNING_RESOURCES.md)
+
+### 🔍 Comparison Guides
+- **Architecture Pattern Comparison**: [COMPARISON_GUIDE.md](./bloc/tech_readme_files/COMPARISON_GUIDE.md)
+- **State Management Comparison**: [STATE_MANAGEMENT_COMPARISON.md](./tech_readme_files/STATE_MANAGEMENT_COMPARISON.md) ⭐ **REORGANIZED**
+  - 7 focused documents for easier learning
+  - Reading time: 5-15 min per document
+  - Multiple learning paths (beginner/intermediate/expert)
+- **Standardization Details**: [STANDARDIZATION_SUMMARY.md](./bloc/tech_readme_files/STANDARDIZATION_SUMMARY.md)
 
 ---
 
