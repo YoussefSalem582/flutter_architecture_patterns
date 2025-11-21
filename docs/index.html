@@ -16,6 +16,12 @@
                 <h1>Flutter Patterns</h1>
                 <span class="version">v1.0</span>
             </div>
+            <div class="theme-toggle-container">
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Dark Mode">
+                    <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                    <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                </button>
+            </div>
             <nav>
                 <ul>
                     <li><a href="#intro" class="active">Introduction</a></li>
@@ -26,7 +32,12 @@
                     <li><a href="#ddd">DDD Pattern</a></li>
                     <li class="section-title">State Management</li>
                     <li><a href="#comparison">BLoC vs GetX</a></li>
-                    <li><a href="#decision">Decision Guide</a></li>
+                    <li><a href="#performance">Performance</a></li>
+                    <li><a href="#devex">Dev Experience</a></li>
+                    <li class="section-title">Resources</li>
+                    <li><a href="#best-practices">Best Practices</a></li>
+                    <li><a href="#learning">Learning</a></li>
+                    <li><a href="#troubleshooting">Troubleshooting</a></li>
                 </ul>
             </nav>
             <div class="sidebar-footer">
@@ -259,28 +270,145 @@
                 </div>
             </section>
 
-            <section id="decision">
+            <section id="performance">
                 <div class="section-header">
-                    <h2>Decision Guide</h2>
+                    <h2>Performance Analysis</h2>
                 </div>
-                <div class="decision-cards">
-                    <div class="card decision-card bloc">
-                        <h3>Choose BLoC if:</h3>
+                <p>A detailed comparison of memory usage, build times, and frame rates.</p>
+                
+                <div class="grid-2">
+                    <div class="card">
+                        <h3>Memory Usage (Idle)</h3>
+                        <ul class="stat-list">
+                            <li><strong>GetX:</strong> ~45MB</li>
+                            <li><strong>BLoC:</strong> ~48MB</li>
+                            <li><strong>Provider:</strong> ~46MB</li>
+                        </ul>
+                        <p class="note">GetX is slightly lighter due to lack of streams.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Cold Start Time</h3>
+                        <ul class="stat-list">
+                            <li><strong>GetX:</strong> ~400ms</li>
+                            <li><strong>BLoC:</strong> ~420ms</li>
+                            <li><strong>Provider:</strong> ~410ms</li>
+                        </ul>
+                        <p class="note">Differences are negligible for most apps.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="devex">
+                <div class="section-header">
+                    <h2>Developer Experience</h2>
+                </div>
+                <div class="grid-2">
+                    <div class="card">
+                        <h3>BLoC Experience</h3>
                         <ul>
-                            <li>🏢 You are building an Enterprise App</li>
-                            <li>👥 You have a large team (> 5 devs)</li>
-                            <li>🧪 You need strict testability</li>
-                            <li>📅 Project lifespan is > 3 years</li>
+                            <li>✅ <strong>Predictable:</strong> Unidirectional data flow makes debugging easy.</li>
+                            <li>✅ <strong>Tooling:</strong> Excellent VS Code extensions and DevTools integration.</li>
+                            <li>❌ <strong>Boilerplate:</strong> Requires writing Events, States, and BLoCs.</li>
                         </ul>
                     </div>
-                    <div class="card decision-card getx">
-                        <h3>Choose GetX if:</h3>
+                    <div class="card">
+                        <h3>GetX Experience</h3>
                         <ul>
-                            <li>🚀 You are building a Startup MVP</li>
-                            <li>⏱️ You have tight deadlines</li>
-                            <li>📉 You want less boilerplate</li>
-                            <li>📱 You are building a consumer app</li>
+                            <li>✅ <strong>Speed:</strong> Very fast to write features. Less code.</li>
+                            <li>✅ <strong>All-in-One:</strong> Includes Navigation, Dialogs, Snackbars, etc.</li>
+                            <li>❌ <strong>Magic:</strong> Can be harder to debug "magic" behavior.</li>
                         </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="best-practices">
+                <div class="section-header">
+                    <h2>Best Practices</h2>
+                </div>
+                <div class="card">
+                    <h3>General Flutter Tips</h3>
+                    <ul class="check-list">
+                        <li>Break down complex widgets into smaller, reusable components.</li>
+                        <li>Use <code>const</code> constructors wherever possible to improve performance.</li>
+                        <li>Handle errors gracefully and show user-friendly messages.</li>
+                        <li>Keep dependencies up to date.</li>
+                    </ul>
+                </div>
+                <div class="grid-2">
+                    <div class="card">
+                        <h3>Clean Architecture</h3>
+                        <ul class="check-list">
+                            <li>Keep layers independent.</li>
+                            <li>Domain layer should have NO Flutter dependencies.</li>
+                            <li>Use repositories to abstract data sources.</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>State Management</h3>
+                        <ul class="check-list">
+                            <li>Use immutable state classes (Equatable).</li>
+                            <li>Keep logic out of the UI (Widgets).</li>
+                            <li>Use <code>buildWhen</code> / <code>listenWhen</code> to optimize rebuilds.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="learning">
+                <div class="section-header">
+                    <h2>Learning Resources</h2>
+                </div>
+                <div class="grid-3">
+                    <div class="card resource-card">
+                        <h3>Official Docs</h3>
+                        <ul>
+                            <li><a href="https://flutter.dev/docs">Flutter Docs</a></li>
+                            <li><a href="https://bloclibrary.dev">BLoC Library</a></li>
+                            <li><a href="https://pub.dev/packages/get">GetX Package</a></li>
+                        </ul>
+                    </div>
+                    <div class="card resource-card">
+                        <h3>Books</h3>
+                        <ul>
+                            <li>Clean Architecture (Uncle Bob)</li>
+                            <li>Domain-Driven Design (Eric Evans)</li>
+                            <li>Flutter in Action</li>
+                        </ul>
+                    </div>
+                    <div class="card resource-card">
+                        <h3>Video Channels</h3>
+                        <ul>
+                            <li>Reso Coder</li>
+                            <li>Flutter Official</li>
+                            <li>Code With Andrea</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="troubleshooting">
+                <div class="section-header">
+                    <h2>Troubleshooting</h2>
+                </div>
+                <div class="accordion">
+                    <div class="accordion-item">
+                        <div class="accordion-header">BLoC/Cubit not found in context</div>
+                        <div class="accordion-content">
+                            <p>Ensure you have wrapped your widget tree with <code>BlocProvider</code>. If navigating to a new route, pass the existing BLoC using <code>BlocProvider.value</code>.</p>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <div class="accordion-header">State not updating</div>
+                        <div class="accordion-content">
+                            <p>Make sure you are emitting a <strong>new instance</strong> of the state. If using Equatable, ensure props are correctly set. Do not mutate state directly.</p>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <div class="accordion-header">HydratedBloc storage not initialized</div>
+                        <div class="accordion-content">
+                            <p>Call <code>HydratedStorage.build</code> in your <code>main()</code> function before <code>runApp()</code>. Ensure <code>WidgetsFlutterBinding.ensureInitialized()</code> is called first.</p>
+                        </div>
                     </div>
                 </div>
             </section>

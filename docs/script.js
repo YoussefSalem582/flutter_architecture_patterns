@@ -1,4 +1,58 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // --- Theme Toggle Logic ---
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    const icon = themeToggle.querySelector('i');
+    
+    // Check for saved theme preference or system preference
+    const savedTheme = localStorage.getItem('theme');
+    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    
+    if (savedTheme) {
+        html.setAttribute('data-theme', savedTheme);
+    } else {
+        html.setAttribute('data-theme', systemTheme);
+    }
+
+    themeToggle.addEventListener('click', () => {
+        const currentTheme = html.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        html.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+    });
+
+    // --- Accordion Logic ---
+    const accordionHeaders = document.querySelectorAll('.accordion-header');
+    
+    accordionHeaders.forEach(header => {
+        header.addEventListener('click', () => {
+            const item = header.parentElement;
+            const content = item.querySelector('.accordion-content');
+            
+            // Toggle active class
+            item.classList.toggle('active');
+            
+            // Animate height
+            if (item.classList.contains('active')) {
+                content.style.maxHeight = content.scrollHeight + 'px';
+            } else {
+                content.style.maxHeight = 0;
+            }
+            
+            // Close other items (optional, but good UX)
+            accordionHeaders.forEach(otherHeader => {
+                if (otherHeader !== header) {
+                    const otherItem = otherHeader.parentElement;
+                    const otherContent = otherItem.querySelector('.accordion-content');
+                    otherItem.classList.remove('active');
+                    otherContent.style.maxHeight = 0;
+                }
+            });
+        });
+    });
+
+    // --- Navigation & Scroll Spy ---
     const sections = document.querySelectorAll('section');
     const navLinks = document.querySelectorAll('nav a');
 
