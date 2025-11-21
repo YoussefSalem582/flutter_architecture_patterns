@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flutter Architecture Patterns</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="logo">
+                <h1>Flutter Patterns</h1>
+                <span class="version">v1.0</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#intro" class="active">Introduction</a></li>
+                    <li class="section-title">Architectures</li>
+                    <li><a href="#mvc">MVC Pattern</a></li>
+                    <li><a href="#mvvm">MVVM Pattern</a></li>
+                    <li><a href="#clean">Clean Architecture</a></li>
+                    <li><a href="#ddd">DDD Pattern</a></li>
+                    <li class="section-title">State Management</li>
+                    <li><a href="#comparison">BLoC vs GetX</a></li>
+                    <li><a href="#decision">Decision Guide</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="https://github.com/YoussefSalem582/flutter_architecture_patterns" target="_blank" class="github-link">
+                    <svg height="20" width="20" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+                    </svg>
+                    View on GitHub
+                </a>
+            </div>
+        </aside>
+
+        <main class="content">
+            <section id="intro">
+                <div class="hero">
+                    <h1>Flutter Architecture Patterns</h1>
+                    <p class="subtitle">A comprehensive guide to building scalable Flutter applications using MVC, MVVM, Clean Architecture, and DDD.</p>
+                    <div class="badges">
+                        <span class="badge flutter">Flutter 3.9.2+</span>
+                        <span class="badge dart">Dart 3.9.2+</span>
+                    </div>
+                </div>
+                
+                <div class="card info-card">
+                    <h3>🎯 Goal</h3>
+                    <p>This project implements the <strong>same set of features</strong> (Counter, Notes, Theme Toggle) across <strong>four different architecture patterns</strong> using <strong>two state management solutions</strong> (BLoC & GetX). This allows for a direct, apples-to-apples comparison.</p>
+                </div>
+            </section>
+
+            <section id="mvc">
+                <div class="section-header">
+                    <h2>MVC (Model-View-Controller)</h2>
+                    <span class="complexity-badge easy">Simple</span>
+                </div>
+                <p>The Model-View-Controller pattern separates the application into three main components: Model, View, and Controller.</p>
+                
+                <div class="grid-2">
+                    <div class="card">
+                        <h3>Structure</h3>
+                        <ul class="structure-list">
+                            <li><strong>Model:</strong> Data and business logic</li>
+                            <li><strong>View:</strong> UI components</li>
+                            <li><strong>Controller:</strong> Mediates between Model and View</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>Best For</h3>
+                        <ul>
+                            <li>✅ Small to medium apps</li>
+                            <li>✅ Rapid prototyping</li>
+                            <li>✅ Learning Flutter basics</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-header">Project Structure</div>
+                    <pre><code>lib/
+├── models/          # Data models
+├── views/           # UI screens
+├── controllers/     # Business logic
+└── main.dart</code></pre>
+                </div>
+            </section>
+
+            <section id="mvvm">
+                <div class="section-header">
+                    <h2>MVVM (Model-View-ViewModel)</h2>
+                    <span class="complexity-badge medium">Moderate</span>
+                </div>
+                <p>MVVM facilitates a separation of development of the graphical user interface from the development of the business logic or back-end logic.</p>
+
+                <div class="grid-2">
+                    <div class="card">
+                        <h3>Structure</h3>
+                        <ul class="structure-list">
+                            <li><strong>Model:</strong> Data entities</li>
+                            <li><strong>View:</strong> UI components</li>
+                            <li><strong>ViewModel:</strong> Presentation logic with observables</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>Best For</h3>
+                        <ul>
+                            <li>✅ Medium to large apps</li>
+                            <li>✅ Complex UI state</li>
+                            <li>✅ Reactive programming</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-header">Project Structure</div>
+                    <pre><code>lib/
+├── models/          # Data entities
+├── views/           # UI screens
+├── viewmodels/      # Presentation logic
+├── bindings/        # Dependency injection
+├── routes/          # Navigation
+└── main.dart</code></pre>
+                </div>
+            </section>
+
+            <section id="clean">
+                <div class="section-header">
+                    <h2>Clean Architecture</h2>
+                    <span class="complexity-badge hard">Complex</span>
+                </div>
+                <p>Clean Architecture separates the software into layers. The inner layers contain business rules, while the outer layers contain implementation details.</p>
+
+                <div class="grid-2">
+                    <div class="card">
+                        <h3>Structure</h3>
+                        <ul class="structure-list">
+                            <li><strong>Data Layer:</strong> Repositories, data sources, models</li>
+                            <li><strong>Domain Layer:</strong> Use cases, entities, interfaces</li>
+                            <li><strong>Presentation Layer:</strong> Controllers, views, bindings</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>Best For</h3>
+                        <ul>
+                            <li>✅ Large scalable apps</li>
+                            <li>✅ Multiple teams</li>
+                            <li>✅ High testability requirements</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-header">Project Structure</div>
+                    <pre><code>lib/
+├── core/            # Shared resources
+├── features/
+│   ├── counter/
+│   │   ├── data/           # Data layer
+│   │   ├── domain/         # Domain layer
+│   │   └── presentation/   # Presentation layer
+│   └── notes/
+└── main.dart</code></pre>
+                </div>
+            </section>
+
+            <section id="ddd">
+                <div class="section-header">
+                    <h2>DDD (Domain-Driven Design)</h2>
+                    <span class="complexity-badge expert">Expert</span>
+                </div>
+                <p>DDD focuses on the core domain logic and domain logic interactions. It involves a collaboration between technical and domain experts.</p>
+
+                <div class="grid-2">
+                    <div class="card">
+                        <h3>Structure</h3>
+                        <ul class="structure-list">
+                            <li><strong>Domain Layer:</strong> Entities, value objects (Pure Dart)</li>
+                            <li><strong>Application Layer:</strong> Use cases orchestrating logic</li>
+                            <li><strong>Infrastructure Layer:</strong> Data sources, implementations</li>
+                            <li><strong>Presentation Layer:</strong> UI and Controllers</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>Best For</h3>
+                        <ul>
+                            <li>✅ Enterprise applications</li>
+                            <li>✅ Complex business logic</li>
+                            <li>✅ Evolving requirements</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-header">Project Structure</div>
+                    <pre><code>lib/
+├── domain/          # Pure business logic
+├── application/     # Use cases
+├── infrastructure/  # Implementation
+├── presentation/    # UI layer
+└── main.dart</code></pre>
+                </div>
+            </section>
+
+            <section id="comparison">
+                <div class="section-header">
+                    <h2>State Management: BLoC vs GetX</h2>
+                </div>
+                <p>This repository provides two complete implementations for each architecture pattern.</p>
+
+                <div class="comparison-table-container">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>BLoC (Business Logic Component)</th>
+                                <th>GetX</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Philosophy</strong></td>
+                                <td>Stream-based, predictable, explicit</td>
+                                <td>Observer pattern, simple, productive</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Learning Curve</strong></td>
+                                <td><span class="badge warning">Steep</span></td>
+                                <td><span class="badge success">Easy</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Boilerplate</strong></td>
+                                <td>High (Events, States)</td>
+                                <td>Low (Minimal code)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Performance</strong></td>
+                                <td>Excellent ⚡⚡⚡⚡⚡</td>
+                                <td>Excellent ⚡⚡⚡⚡⚡</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Testability</strong></td>
+                                <td>Excellent (blocTest)</td>
+                                <td>Good</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Best For</strong></td>
+                                <td>Large teams, strict architecture</td>
+                                <td>Rapid development, MVPs</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="decision">
+                <div class="section-header">
+                    <h2>Decision Guide</h2>
+                </div>
+                <div class="decision-cards">
+                    <div class="card decision-card bloc">
+                        <h3>Choose BLoC if:</h3>
+                        <ul>
+                            <li>🏢 You are building an Enterprise App</li>
+                            <li>👥 You have a large team (> 5 devs)</li>
+                            <li>🧪 You need strict testability</li>
+                            <li>📅 Project lifespan is > 3 years</li>
+                        </ul>
+                    </div>
+                    <div class="card decision-card getx">
+                        <h3>Choose GetX if:</h3>
+                        <ul>
+                            <li>🚀 You are building a Startup MVP</li>
+                            <li>⏱️ You have tight deadlines</li>
+                            <li>📉 You want less boilerplate</li>
+                            <li>📱 You are building a consumer app</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <footer>
+                <p>Created by <a href="https://github.com/YoussefSalem582">YoussefSalem582</a> | Flutter Architecture Patterns</p>
+            </footer>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
