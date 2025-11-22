@@ -9,7 +9,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
     <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dart.min.js"></script>
     <style>
         body { font-family: 'Cairo', 'Inter', sans-serif; }
         .code-block { direction: ltr; text-align: left; }
@@ -17,11 +20,18 @@
     </style>
 </head>
 <body>
+    <div class="mobile-header">
+        <button id="mobile-menu-btn" aria-label="Open Menu">
+            <i class="fas fa-bars"></i>
+        </button>
+        <span class="mobile-logo">أنماط Flutter</span>
+    </div>
+    <div id="mobile-overlay" class="mobile-overlay"></div>
     <div class="app-container">
         <aside class="sidebar">
             <div class="logo">
                 <h1>أنماط Flutter</h1>
-                <span class="version">v1.0</span>
+                <span class="version">v2.0</span>
             </div>
             <div class="theme-toggle-container">
                 <a href="index.html" class="lang-toggle" aria-label="Switch to English">English</a>
@@ -31,21 +41,36 @@
                 </button>
             </div>
             <nav>
-                <ul>
-                    <li><a href="#intro" class="active">مقدمة</a></li>
-                    <li class="section-title">الأنماط المعمارية</li>
-                    <li><a href="#mvc">نمط MVC</a></li>
-                    <li><a href="#mvvm">نمط MVVM</a></li>
-                    <li><a href="#clean">العمارة النظيفة</a></li>
-                    <li><a href="#ddd">نمط DDD</a></li>
-                    <li class="section-title">إدارة الحالة</li>
-                    <li><a href="#comparison">مقارنة BLoC و GetX</a></li>
-                    <li><a href="#performance">الأداء</a></li>
-                    <li><a href="#devex">تجربة المطور</a></li>
-                    <li class="section-title">الموارد</li>
-                    <li><a href="#best-practices">أفضل الممارسات</a></li>
-                    <li><a href="#learning">التعلم</a></li>
-                    <li><a href="#troubleshooting">استكشاف الأخطاء</a></li>
+                <ul class="nav-list">
+                    <li><a href="#intro" class="nav-item active"><i class="fas fa-home"></i> مقدمة</a></li>
+                    
+                    <li class="nav-group">
+                        <div class="nav-group-title"><i class="fas fa-layer-group"></i> الأنماط المعمارية</div>
+                        <ul class="nav-sublist">
+                            <li><a href="#mvc" class="nav-item"><i class="fas fa-cube"></i> نمط MVC</a></li>
+                            <li><a href="#mvvm" class="nav-item"><i class="fas fa-cubes"></i> نمط MVVM</a></li>
+                            <li><a href="#clean" class="nav-item"><i class="fas fa-shield-alt"></i> العمارة النظيفة</a></li>
+                            <li><a href="#ddd" class="nav-item"><i class="fas fa-network-wired"></i> نمط DDD</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-group">
+                        <div class="nav-group-title"><i class="fas fa-code-branch"></i> إدارة الحالة</div>
+                        <ul class="nav-sublist">
+                            <li><a href="#comparison" class="nav-item"><i class="fas fa-balance-scale"></i> مقارنة BLoC و GetX</a></li>
+                            <li><a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> الأداء</a></li>
+                            <li><a href="#devex" class="nav-item"><i class="fas fa-laptop-code"></i> تجربة المطور</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-group">
+                        <div class="nav-group-title"><i class="fas fa-book"></i> الموارد</div>
+                        <ul class="nav-sublist">
+                            <li><a href="#best-practices" class="nav-item"><i class="fas fa-check-circle"></i> أفضل الممارسات</a></li>
+                            <li><a href="#learning" class="nav-item"><i class="fas fa-graduation-cap"></i> التعلم</a></li>
+                            <li><a href="#troubleshooting" class="nav-item"><i class="fas fa-bug"></i> استكشاف الأخطاء</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </nav>
             <div class="sidebar-footer">
@@ -77,87 +102,114 @@
 
             <section id="mvc">
                 <div class="section-header">
-                    <h2>MVC (النموذج-العرض-المتحكم)</h2>
+                    <h2><i class="fas fa-cube"></i> MVC (النموذج-العرض-المتحكم)</h2>
                     <span class="complexity-badge easy">بسيط</span>
                 </div>
-                <p>يفصل نمط Model-View-Controller التطبيق إلى ثلاثة مكونات رئيسية: النموذج والعرض والمتحكم.</p>
-                
-                <div class="mermaid">
-                    graph LR
-                    View["العرض"] -- إجراء المستخدم --> Controller["المتحكم"]
-                    Controller -- تحديث --> Model["النموذج"]
-                    Model -- إشعار --> View
-                </div>
 
-                <h4>تدفق التفاعل</h4>
-                <div class="mermaid">
-                    sequenceDiagram
-                        participant User as المستخدم
-                        participant View as العرض
-                        participant Controller as المتحكم
-                        participant Model as النموذج
-                        
-                        User->>View: ضغط الزر
-                        View->>Controller: استدعاء دالة
-                        Controller->>Model: تحديث البيانات
-                        Model-->>View: إشعار المستمعين
-                        View->>View: إعادة بناء
-                </div>
-                <div class="card info-card" style="margin-top: 1rem;">
-                    <h3>💡 المفهوم الأساسي</h3>
-                    <p>يعمل <strong>المتحكم (Controller)</strong> بمثابة "الدماغ". يستقبل مدخلات المستخدم من <strong>العرض (View)</strong>، ويعالجها (غالبًا بتحديث <strong>النموذج</strong>)، ثم يطلب من <strong>العرض</strong> التحديث. العرض سلبي ويعرض فقط ما يُطلب منه.</p>
-                </div>
-
-                <div class="card analogy-card">
-                    <h3>🍔 تشبيه من العالم الحقيقي: المطعم</h3>
-                    <p>
-                        <strong>العرض (الزبون):</strong> يرى القائمة ويطلب الطعام.<br>
-                        <strong>المتحكم (النادل):</strong> يأخذ الطلب إلى المطبخ ويحضر الطعام.<br>
-                        <strong>النموذج (المطبخ):</strong> يجهز الطعام (البيانات) ويتعامل مع المكونات (المنطق).
-                    </p>
-                </div>
-
-                <div class="grid-2">
-                    <div class="card">
-                        <h3>الهيكل</h3>
-                        <ul class="structure-list">
-                            <li><strong>النموذج (Model):</strong> البيانات ومنطق العمل</li>
-                            <li><strong>العرض (View):</strong> مكونات واجهة المستخدم</li>
-                            <li><strong>المتحكم (Controller):</strong> يتوسط بين النموذج والعرض</li>
-                        </ul>
+                <div class="topic-group">
+                    <h3 class="topic-title"><i class="fas fa-info-circle"></i> نظرة عامة</h3>
+                    <p>يفصل نمط Model-View-Controller التطبيق إلى ثلاثة مكونات رئيسية: النموذج والعرض والمتحكم.</p>
+                    
+                    <div class="mermaid">
+                        graph LR
+                        View["العرض"] -- إجراء المستخدم --> Controller["المتحكم"]
+                        Controller -- تحديث --> Model["النموذج"]
+                        Model -- إشعار --> View
                     </div>
-                    <div class="card">
-                        <h3>الأفضل لـ</h3>
-                        <ul>
-                            <li>✅ التطبيقات الصغيرة والمتوسطة</li>
-                            <li>✅ النماذج الأولية السريعة</li>
-                            <li>✅ تعلم أساسيات Flutter</li>
-                        </ul>
+                    
+                    <h4>تدفق التفاعل</h4>
+                    <div class="mermaid">
+                        sequenceDiagram
+                            participant User as المستخدم
+                            participant View as العرض
+                            participant Controller as المتحكم
+                            participant Model as النموذج
+                            
+                            User->>View: ضغط الزر
+                            View->>Controller: استدعاء دالة
+                            Controller->>Model: تحديث البيانات
+                            Model-->>View: إشعار المستمعين
+                            View->>View: إعادة بناء
                     </div>
                 </div>
 
-                <div class="grid-2">
-                    <div class="card">
-                        <h3>✅ الإيجابيات</h3>
-                        <ul class="check-list">
-                            <li><strong>البساطة:</strong> سهل الفهم والتنفيذ.</li>
-                            <li><strong>الفصل:</strong> تمييز واضح بين البيانات (النموذج) وواجهة المستخدم (العرض).</li>
-                            <li><strong>سرعة التطوير:</strong> ممتاز لإطلاق المنتجات الأولية (MVP) بسرعة.</li>
-                        </ul>
+                <div class="topic-group">
+                    <h3 class="topic-title"><i class="fas fa-lightbulb"></i> المفاهيم الأساسية</h3>
+                    <div class="card info-card">
+                        <h3>💡 المفهوم الأساسي</h3>
+                        <p>يعمل <strong>المتحكم (Controller)</strong> بمثابة "الدماغ". يستقبل مدخلات المستخدم من <strong>العرض (View)</strong>، ويعالجها (غالبًا بتحديث <strong>النموذج</strong>)، ثم يطلب من <strong>العرض</strong> التحديث. العرض سلبي ويعرض فقط ما يُطلب منه.</p>
                     </div>
-                    <div class="card">
-                        <h3>❌ السلبيات</h3>
-                        <ul class="check-list">
-                            <li><strong>الاقتران القوي:</strong> تعتمد العروض غالبًا بشكل مباشر على النماذج.</li>
-                            <li><strong>تضخم المتحكمات:</strong> يمكن أن تصبح المتحكمات ضخمة وتتحمل الكثير من المنطق.</li>
-                            <li><strong>صعوبة الاختبار:</strong> قد يكون من الصعب اختبار منطق واجهة المستخدم المختلط بمنطق العمل.</li>
-                        </ul>
+
+                    <div class="card analogy-card">
+                        <h3>🍔 تشبيه من العالم الحقيقي: المطعم</h3>
+                        <p>
+                            <strong>العرض (الزبون):</strong> يرى القائمة ويطلب الطعام.<br>
+                            <strong>المتحكم (النادل):</strong> يأخذ الطلب إلى المطبخ ويحضر الطعام.<br>
+                            <strong>النموذج (المطبخ):</strong> يجهز الطعام (البيانات) ويتعامل مع المكونات (المنطق).
+                        </p>
                     </div>
                 </div>
 
-                <div class="code-block">
-                    <div class="code-header">هيكل المشروع</div>
-                    <pre><code>lib/
+                <div class="topic-group">
+                    <h3 class="topic-title"><i class="fas fa-chart-pie"></i> التحليل</h3>
+                    <div class="grid-2">
+                        <div class="card">
+                            <h3>الهيكل</h3>
+                            <ul class="structure-list">
+                                <li><strong>النموذج (Model):</strong> البيانات ومنطق العمل</li>
+                                <li><strong>العرض (View):</strong> مكونات واجهة المستخدم</li>
+                                <li><strong>المتحكم (Controller):</strong> يتوسط بين النموذج والعرض</li>
+                            </ul>
+                        </div>
+                        <div class="card">
+                            <h3>الأفضل لـ</h3>
+                            <ul>
+                                <li>✅ التطبيقات الصغيرة والمتوسطة</li>
+                                <li>✅ النماذج الأولية السريعة</li>
+                                <li>✅ تعلم أساسيات Flutter</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="card">
+                            <h3>✅ الإيجابيات</h3>
+                            <ul class="check-list">
+                                <li><strong>البساطة:</strong> سهل الفهم والتنفيذ.</li>
+                                <li><strong>الفصل:</strong> تمييز واضح بين البيانات (النموذج) وواجهة المستخدم (العرض).</li>
+                                <li><strong>سرعة التطوير:</strong> ممتاز لإطلاق المنتجات الأولية (MVP) بسرعة.</li>
+                            </ul>
+                        </div>
+                        <div class="card">
+                            <h3>❌ السلبيات</h3>
+                            <ul class="check-list">
+                                <li><strong>الاقتران القوي:</strong> تعتمد العروض غالبًا بشكل مباشر على النماذج.</li>
+                                <li><strong>تضخم المتحكمات:</strong> يمكن أن تصبح المتحكمات ضخمة وتتحمل الكثير من المنطق.</li>
+                                <li><strong>صعوبة الاختبار:</strong> قد يكون من الصعب اختبار منطق واجهة المستخدم المختلط بمنطق العمل.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="topic-group">
+                    <h3 class="topic-title"><i class="fas fa-code"></i> التنفيذ</h3>
+                    <div class="code-block">
+                        <div class="code-header">مثال: متحكم العداد</div>
+                        <pre><code class="language-dart">class CounterController {
+  int count = 0;
+  
+  // المتحكم يعالج المنطق
+  void increment() {
+    count++;
+    // ويخبر العرض يدويًا بالتحديث
+    update(); 
+  }
+}</code></pre>
+                    </div>
+
+                    <div class="code-block">
+                        <div class="code-header">هيكل المشروع</div>
+                        <pre><code class="language-bash">lib/
 ├── main.dart            # نقطة الدخول
 ├── config/              # المسارات، السمات
 ├── models/              # نماذج البيانات
@@ -167,94 +219,125 @@
 │   └── widgets/
 └── controllers/         # منطق العمل
     └── home_controller.dart</code></pre>
+                    </div>
                 </div>
             </section>
 
             <section id="mvvm">
                 <div class="section-header">
-                    <h2>MVVM (النموذج-العرض-نموذج العرض)</h2>
+                    <h2><i class="fas fa-cubes"></i> MVVM (النموذج-العرض-نموذج العرض)</h2>
                     <span class="complexity-badge medium">متوسط</span>
                 </div>
-                <p>يسهل MVVM فصل تطوير واجهة المستخدم الرسومية عن تطوير منطق العمل أو المنطق الخلفي.</p>
 
-                <div class="mermaid">
-                    graph LR
-                    View["العرض"] -- ربط --> ViewModel["نموذج العرض"]
-                    ViewModel -- تحديث --> Model["النموذج"]
-                    Model -- إشعار --> ViewModel
-                    ViewModel -- إشعار --> View
-                </div>
+                <div class="topic-group">
+                    <h3 class="topic-title"><i class="fas fa-info-circle"></i> نظرة عامة</h3>
+                    <p>يسهل MVVM فصل تطوير واجهة المستخدم الرسومية عن تطوير منطق العمل أو المنطق الخلفي.</p>
 
-                <h4>تدفق ربط البيانات</h4>
-                <div class="mermaid">
-                    sequenceDiagram
-                        participant User as المستخدم
-                        participant View as العرض
-                        participant ViewModel as نموذج العرض
-                        participant Model as النموذج
-                        
-                        User->>View: إدخال بيانات
-                        View->>ViewModel: تحديث القابل للملاحظة
-                        ViewModel->>Model: حفظ البيانات
-                        Model-->>ViewModel: تأكيد
-                        ViewModel-->>View: تحديث الحالة
-                </div>
-                <div class="card info-card" style="margin-top: 1rem;">
-                    <h3>💡 المفهوم الأساسي</h3>
-                    <p>يعرض <strong>نموذج العرض (ViewModel)</strong> تدفقات من البيانات (الحالة) التي يستمع إليها <strong>العرض</strong>. عندما يتغير النموذج، يقوم نموذج العرض بتحديث التدفق، ويعيد العرض بناء نفسه تلقائيًا. هذا يلغي الحاجة لأن يقوم نموذج العرض بتحديث العرض يدويًا.</p>
-                </div>
-
-                <div class="card analogy-card">
-                    <h3>📺 تشبيه من العالم الحقيقي: إعداد التلفاز</h3>
-                    <p>
-                        <strong>العرض (شاشة التلفاز):</strong> تعرض أي إشارة تتلقاها.<br>
-                        <strong>نموذج العرض (جهاز الاستقبال):</strong> يعالج الإشارة الخام إلى شيء يمكن للتلفاز عرضه.<br>
-                        <strong>النموذج (محطة البث):</strong> مصدر الإشارة/البيانات الخام.<br>
-                        <em>ملاحظة: التلفاز لا يطلب البيانات من المحطة؛ هو فقط يتفاعل مع جهاز الاستقبال.</em>
-                    </p>
-                </div>
-
-                <div class="grid-2">
-                    <div class="card">
-                        <h3>الهيكل</h3>
-                        <ul class="structure-list">
-                            <li><strong>النموذج (Model):</strong> كيانات البيانات</li>
-                            <li><strong>العرض (View):</strong> مكونات واجهة المستخدم</li>
-                            <li><strong>نموذج العرض (ViewModel):</strong> منطق العرض مع القابلة للملاحظة</li>
-                        </ul>
+                    <div class="mermaid">
+                        graph LR
+                        View["العرض"] -- ربط --> ViewModel["نموذج العرض"]
+                        ViewModel -- تحديث --> Model["النموذج"]
+                        Model -- إشعار --> ViewModel
+                        ViewModel -- إشعار --> View
                     </div>
-                    <div class="card">
-                        <h3>الأفضل لـ</h3>
-                        <ul>
-                            <li>✅ التطبيقات المتوسطة إلى الكبيرة</li>
-                            <li>✅ حالة واجهة المستخدم المعقدة</li>
-                            <li>✅ البرمجة التفاعلية</li>
-                        </ul>
+
+                    <h4>تدفق ربط البيانات</h4>
+                    <div class="mermaid">
+                        sequenceDiagram
+                            participant User as المستخدم
+                            participant View as العرض
+                            participant ViewModel as نموذج العرض
+                            participant Model as النموذج
+                            
+                            User->>View: إدخال بيانات
+                            View->>ViewModel: تحديث القابل للملاحظة
+                            ViewModel->>Model: حفظ البيانات
+                            Model-->>ViewModel: تأكيد
+                            ViewModel-->>View: تحديث الحالة
                     </div>
                 </div>
 
-                <div class="grid-2">
-                    <div class="card">
-                        <h3>✅ الإيجابيات</h3>
-                        <ul class="check-list">
-                            <li><strong>فك الارتباط:</strong> العرض لا يعرف شيئًا عن النموذج، فقط نموذج العرض.</li>
-                            <li><strong>قابلية الاختبار:</strong> نماذج العرض سهلة الاختبار (بدون تبعية لواجهة المستخدم).</li>
-                            <li><strong>إعادة الاستخدام:</strong> يمكن إعادة استخدام نماذج العرض عبر شاشات مختلفة.</li>
-                        </ul>
+                <div class="topic-group">
+                    <h3 class="topic-title"><i class="fas fa-lightbulb"></i> المفاهيم الأساسية</h3>
+                    <div class="card info-card">
+                        <h3>💡 المفهوم الأساسي</h3>
+                        <p>يعرض <strong>نموذج العرض (ViewModel)</strong> تدفقات من البيانات (الحالة) التي يستمع إليها <strong>العرض</strong>. عندما يتغير النموذج، يقوم نموذج العرض بتحديث التدفق، ويعيد العرض بناء نفسه تلقائيًا. هذا يلغي الحاجة لأن يقوم نموذج العرض بتحديث العرض يدويًا.</p>
                     </div>
-                    <div class="card">
-                        <h3>❌ السلبيات</h3>
-                        <ul class="check-list">
-                            <li><strong>التعقيد:</strong> يتطلب فهم البرمجة التفاعلية (Streams/Observables).</li>
-                            <li><strong>العبء الإضافي:</strong> قد يكون مبالغًا فيه للشاشات البسيطة جدًا.</li>
-                            <li><strong>التصحيح:</strong> تتبع تدفق البيانات في الكود التفاعلي قد يكون صعبًا.</li>
-                        </ul>
+
+                    <div class="card analogy-card">
+                        <h3>📺 تشبيه من العالم الحقيقي: إعداد التلفاز</h3>
+                        <p>
+                            <strong>العرض (شاشة التلفاز):</strong> تعرض أي إشارة تتلقاها.<br>
+                            <strong>نموذج العرض (جهاز الاستقبال):</strong> يعالج الإشارة الخام إلى شيء يمكن للتلفاز عرضه.<br>
+                            <strong>النموذج (محطة البث):</strong> مصدر الإشارة/البيانات الخام.<br>
+                            <em>ملاحظة: التلفاز لا يطلب البيانات من المحطة؛ هو فقط يتفاعل مع جهاز الاستقبال.</em>
+                        </p>
                     </div>
                 </div>
 
-                <div class="code-block">
-                    <div class="code-header">هيكل المشروع</div>
-                    <pre><code>lib/
+                <div class="topic-group">
+                    <h3 class="topic-title"><i class="fas fa-chart-pie"></i> التحليل</h3>
+                    <div class="grid-2">
+                        <div class="card">
+                            <h3>الهيكل</h3>
+                            <ul class="structure-list">
+                                <li><strong>النموذج (Model):</strong> كيانات البيانات</li>
+                                <li><strong>العرض (View):</strong> مكونات واجهة المستخدم</li>
+                                <li><strong>نموذج العرض (ViewModel):</strong> منطق العرض مع القابلة للملاحظة</li>
+                            </ul>
+                        </div>
+                        <div class="card">
+                            <h3>الأفضل لـ</h3>
+                            <ul>
+                                <li>✅ التطبيقات المتوسطة إلى الكبيرة</li>
+                                <li>✅ حالة واجهة المستخدم المعقدة</li>
+                                <li>✅ البرمجة التفاعلية</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="card">
+                            <h3>✅ الإيجابيات</h3>
+                            <ul class="check-list">
+                                <li><strong>فك الارتباط:</strong> العرض لا يعرف شيئًا عن النموذج، فقط نموذج العرض.</li>
+                                <li><strong>قابلية الاختبار:</strong> نماذج العرض سهلة الاختبار (بدون تبعية لواجهة المستخدم).</li>
+                                <li><strong>إعادة الاستخدام:</strong> يمكن إعادة استخدام نماذج العرض عبر شاشات مختلفة.</li>
+                            </ul>
+                        </div>
+                        <div class="card">
+                            <h3>❌ السلبيات</h3>
+                            <ul class="check-list">
+                                <li><strong>التعقيد:</strong> يتطلب فهم البرمجة التفاعلية (Streams/Observables).</li>
+                                <li><strong>العبء الإضافي:</strong> قد يكون مبالغًا فيه للشاشات البسيطة جدًا.</li>
+                                <li><strong>التصحيح:</strong> تتبع تدفق البيانات في الكود التفاعلي قد يكون صعبًا.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="topic-group">
+                    <h3 class="topic-title"><i class="fas fa-code"></i> التنفيذ</h3>
+                    <div class="code-block">
+                        <div class="code-header">مثال: نموذج عرض تفاعلي</div>
+                        <pre><code class="language-dart">class CounterViewModel {
+  // كشف تدفق من البيانات (الحالة)
+  final _countController = StreamController&lt;int&gt;();
+  Stream&lt;int&gt; get countStream => _countController.stream;
+  
+  int _count = 0;
+  
+  void increment() {
+    _count++;
+    // إضافة قيمة جديدة للتدفق - العرض يتحدث تلقائيًا
+    _countController.add(_count);
+  }
+}</code></pre>
+                    </div>
+
+                    <div class="code-block">
+                        <div class="code-header">هيكل المشروع</div>
+                        <pre><code class="language-bash">lib/
 ├── main.dart
 ├── core/                # الثوابت، الأدوات
 ├── models/              # نماذج البيانات
@@ -264,104 +347,136 @@
 ├── viewmodels/          # الحالة والمنطق
 │   └── login_vm.dart
 └── services/            # استدعاءات API، التخزين المحلي</code></pre>
+                    </div>
                 </div>
             </section>
 
             <section id="clean">
                 <div class="section-header">
-                    <h2>العمارة النظيفة (Clean Architecture)</h2>
+                    <h2><i class="fas fa-shield-alt"></i> العمارة النظيفة (Clean Architecture)</h2>
                     <span class="complexity-badge hard">معقد</span>
                 </div>
-                <p>تفصل العمارة النظيفة البرنامج إلى طبقات. تحتوي الطبقات الداخلية على قواعد العمل، بينما تحتوي الطبقات الخارجية على تفاصيل التنفيذ.</p>
 
-                <div class="mermaid">
-                    graph TD
-                    UI["واجهة المستخدم"] --> Presentation["طبقة العرض<br/>(BLoC / Controllers)"]
-                    Presentation --> Domain["طبقة المجال<br/>(Use Cases / Entities)"]
-                    Data["طبقة البيانات<br/>(Repositories / Data Sources)"] --> Domain
-                </div>
+                <div class="topic-group">
+                    <h3 class="topic-title"><i class="fas fa-info-circle"></i> نظرة عامة</h3>
+                    <p>تفصل العمارة النظيفة البرنامج إلى طبقات. تحتوي الطبقات الداخلية على قواعد العمل، بينما تحتوي الطبقات الخارجية على تفاصيل التنفيذ.</p>
 
-                <h3>نمط المستودع (Repository Pattern)</h3>
-                <p>كيفية تدفق البيانات بين الطبقات دون انتهاك قواعد التبعية.</p>
-                <div class="mermaid">
-                    graph LR
-                    UseCase["حالة الاستخدام"] -- تستدعي --> RepoInterface["واجهة المستودع<br/>(المجال)"]
-                    RepoImpl["تطبيق المستودع<br/>(البيانات)"] -- ينفذ --> RepoInterface
-                    RepoImpl -- يستخدم --> DataSource["مصدر البيانات<br/>(API/DB)"]
-                </div>
-
-                <h4>تدفق التحكم (طلب/استجابة)</h4>
-                <div class="mermaid">
-                    sequenceDiagram
-                        participant UI as واجهة المستخدم
-                        participant BLoC as BLoC
-                        participant UseCase as حالة الاستخدام
-                        participant Repository as المستودع
-                        participant DataSource as مصدر البيانات
-                        
-                        UI->>BLoC: إضافة حدث
-                        BLoC->>UseCase: تنفيذ
-                        UseCase->>Repository: جلب البيانات
-                        Repository->>DataSource: إحضار
-                        DataSource-->>Repository: بيانات خام
-                        Repository-->>UseCase: كيان المجال
-                        UseCase-->>BLoC: نتيجة
-                        BLoC-->>UI: إصدار حالة
-                </div>
-                <div class="card info-card" style="margin-top: 1rem;">
-                    <h3>💡 قاعدة التبعية</h3>
-                    <p>يمكن لتبعي الكود المصدري أن تشير فقط <strong>إلى الداخل</strong>. لا يمكن لأي شيء في دائرة داخلية (مثل المجال) أن يعرف أي شيء على الإطلاق عن شيء في دائرة خارجية (مثل العرض أو البيانات). هذا يجعل المنطق الأساسي محصنًا ضد تغييرات واجهة المستخدم أو قاعدة البيانات.</p>
-                </div>
-
-                <div class="card analogy-card">
-                    <h3>🏰 تشبيه من العالم الحقيقي: القلعة</h3>
-                    <p>
-                        <strong>المجال (الملك):</strong> يعيش في المركز، يضع القواعد، ولا يعرف شيئًا عن العالم الخارجي.<br>
-                        <strong>العرض/البيانات (الحراس):</strong> يحمون الملك، ويتعاملون مع الرسل (API) والزوار (UI)، ويترجمون طلباتهم إلى شيء يفهمه الملك.
-                    </p>
-                </div>
-
-                <div class="grid-2">
-                    <div class="card">
-                        <h3>الهيكل</h3>
-                        <ul class="structure-list">
-                            <li><strong>طبقة البيانات:</strong> المستودعات، مصادر البيانات، النماذج</li>
-                            <li><strong>طبقة المجال:</strong> حالات الاستخدام، الكيانات، الواجهات</li>
-                            <li><strong>طبقة العرض:</strong> المتحكمات، العروض، الروابط</li>
-                        </ul>
+                    <div class="mermaid">
+                        graph TD
+                        UI["واجهة المستخدم"] --> Presentation["طبقة العرض<br/>(BLoC / Controllers)"]
+                        Presentation --> Domain["طبقة المجال<br/>(Use Cases / Entities)"]
+                        Data["طبقة البيانات<br/>(Repositories / Data Sources)"] --> Domain
                     </div>
-                    <div class="card">
-                        <h3>الأفضل لـ</h3>
-                        <ul>
-                            <li>✅ تطبيقات كبيرة قابلة للتطوير</li>
-                            <li>✅ فرق متعددة</li>
-                            <li>✅ متطلبات اختبار عالية</li>
-                        </ul>
+
+                    <h4>نمط المستودع (Repository Pattern)</h4>
+                    <p>كيفية تدفق البيانات بين الطبقات دون انتهاك قواعد التبعية.</p>
+                    <div class="mermaid">
+                        graph LR
+                        UseCase["حالة الاستخدام"] -- تستدعي --> RepoInterface["واجهة المستودع<br/>(المجال)"]
+                        RepoImpl["تطبيق المستودع<br/>(البيانات)"] -- ينفذ --> RepoInterface
+                        RepoImpl -- يستخدم --> DataSource["مصدر البيانات<br/>(API/DB)"]
+                    </div>
+
+                    <h4>تدفق التحكم (طلب/استجابة)</h4>
+                    <div class="mermaid">
+                        sequenceDiagram
+                            participant UI as واجهة المستخدم
+                            participant BLoC as BLoC
+                            participant UseCase as حالة الاستخدام
+                            participant Repository as المستودع
+                            participant DataSource as مصدر البيانات
+                            
+                            UI->>BLoC: إضافة حدث
+                            BLoC->>UseCase: تنفيذ
+                            UseCase->>Repository: جلب البيانات
+                            Repository->>DataSource: إحضار
+                            DataSource-->>Repository: بيانات خام
+                            Repository-->>UseCase: كيان المجال
+                            UseCase-->>BLoC: نتيجة
+                            BLoC-->>UI: إصدار حالة
                     </div>
                 </div>
 
-                <div class="grid-2">
-                    <div class="card">
-                        <h3>✅ الإيجابيات</h3>
-                        <ul class="check-list">
-                            <li><strong>الاستقلالية:</strong> يمكن تغيير واجهة المستخدم وقاعدة البيانات والأطر دون التأثير على قواعد العمل.</li>
-                            <li><strong>قابلية الاختبار:</strong> يمكن اختبار منطق العمل (حالات الاستخدام) بمعزل عن غيره.</li>
-                            <li><strong>قابلية الصيانة:</strong> الحدود الواضحة تجعل من السهل التنقل وإصلاح الأخطاء.</li>
-                        </ul>
+                <div class="topic-group">
+                    <h3 class="topic-title"><i class="fas fa-lightbulb"></i> المفاهيم الأساسية</h3>
+                    <div class="card info-card">
+                        <h3>💡 قاعدة التبعية</h3>
+                        <p>يمكن لتبعي الكود المصدري أن تشير فقط <strong>إلى الداخل</strong>. لا يمكن لأي شيء في دائرة داخلية (مثل المجال) أن يعرف أي شيء على الإطلاق عن شيء في دائرة خارجية (مثل العرض أو البيانات). هذا يجعل المنطق الأساسي محصنًا ضد تغييرات واجهة المستخدم أو قاعدة البيانات.</p>
                     </div>
-                    <div class="card">
-                        <h3>❌ السلبيات</h3>
-                        <ul class="check-list">
-                            <li><strong>الكود النمطي:</strong> يتطلب كتابة العديد من الملفات (DTOs, Mappers, Interfaces).</li>
-                            <li><strong>منحنى التعلم:</strong> مفاهيم مثل عكس التبعية قد تكون صعبة الفهم.</li>
-                            <li><strong>هندسة زائدة:</strong> معقد جدًا لتطبيقات CRUD البسيطة.</li>
-                        </ul>
+
+                    <div class="card analogy-card">
+                        <h3>🏰 تشبيه من العالم الحقيقي: القلعة</h3>
+                        <p>
+                            <strong>المجال (الملك):</strong> يعيش في المركز، يضع القواعد، ولا يعرف شيئًا عن العالم الخارجي.<br>
+                            <strong>العرض/البيانات (الحراس):</strong> يحمون الملك، ويتعاملون مع الرسل (API) والزوار (UI)، ويترجمون طلباتهم إلى شيء يفهمه الملك.
+                        </p>
                     </div>
                 </div>
 
-                <div class="code-block">
-                    <div class="code-header">هيكل المشروع</div>
-                    <pre><code>lib/
+                <div class="topic-group">
+                    <h3 class="topic-title"><i class="fas fa-chart-pie"></i> التحليل</h3>
+                    <div class="grid-2">
+                        <div class="card">
+                            <h3>الهيكل</h3>
+                            <ul class="structure-list">
+                                <li><strong>طبقة البيانات:</strong> المستودعات، مصادر البيانات، النماذج</li>
+                                <li><strong>طبقة المجال:</strong> حالات الاستخدام، الكيانات، الواجهات</li>
+                                <li><strong>طبقة العرض:</strong> المتحكمات، العروض، الروابط</li>
+                            </ul>
+                        </div>
+                        <div class="card">
+                            <h3>الأفضل لـ</h3>
+                            <ul>
+                                <li>✅ تطبيقات كبيرة قابلة للتطوير</li>
+                                <li>✅ فرق متعددة</li>
+                                <li>✅ متطلبات اختبار عالية</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="card">
+                            <h3>✅ الإيجابيات</h3>
+                            <ul class="check-list">
+                                <li><strong>الاستقلالية:</strong> يمكن تغيير واجهة المستخدم وقاعدة البيانات والأطر دون التأثير على قواعد العمل.</li>
+                                <li><strong>قابلية الاختبار:</strong> يمكن اختبار منطق العمل (حالات الاستخدام) بمعزل عن غيره.</li>
+                                <li><strong>قابلية الصيانة:</strong> الحدود الواضحة تجعل من السهل التنقل وإصلاح الأخطاء.</li>
+                            </ul>
+                        </div>
+                        <div class="card">
+                            <h3>❌ السلبيات</h3>
+                            <ul class="check-list">
+                                <li><strong>الكود النمطي:</strong> يتطلب كتابة العديد من الملفات (DTOs, Mappers, Interfaces).</li>
+                                <li><strong>منحنى التعلم:</strong> مفاهيم مثل عكس التبعية قد تكون صعبة الفهم.</li>
+                                <li><strong>هندسة زائدة:</strong> معقد جدًا لتطبيقات CRUD البسيطة.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="topic-group">
+                    <h3 class="topic-title"><i class="fas fa-code"></i> التنفيذ</h3>
+                    <div class="code-block">
+                        <div class="code-header">مثال: حالة استخدام المجال</div>
+                        <pre><code class="language-dart">// طبقة المجال: Dart نقي، بدون تبعيات Flutter
+class GetUserUseCase {
+  final UserRepository repository;
+
+  GetUserUseCase(this.repository);
+
+  // ينفذ قاعدة عمل محددة
+  Future&lt;User&gt; execute(String userId) async {
+    // يمكن إضافة التحقق أو منطق آخر هنا
+    if (userId.isEmpty) throw InvalidIdException();
+    
+    return await repository.getUser(userId);
+  }
+}</code></pre>
+                    </div>
+
+                    <div class="code-block">
+                        <div class="code-header">هيكل المشروع</div>
+                        <pre><code class="language-bash">lib/
 ├── main.dart
 ├── core/                # الأخطاء، الشبكة، الأدوات
 ├── config/              # المسارات، السمة
@@ -379,113 +494,146 @@
             ├── bloc/
             ├── pages/
             └── widgets/</code></pre>
+                    </div>
                 </div>
             </section>
 
             <section id="ddd">
                 <div class="section-header">
-                    <h2>DDD (التصميم القائم على المجال)</h2>
+                    <h2><i class="fas fa-network-wired"></i> DDD (التصميم القائم على المجال)</h2>
                     <span class="complexity-badge expert">خبير</span>
                 </div>
-                <p>يركز DDD على منطق المجال الأساسي وتفاعلات منطق المجال. ينطوي على تعاون بين الخبراء التقنيين وخبراء المجال.</p>
 
-                <div class="mermaid">
-                    graph TD
-                    subgraph Domain["طبقة المجال (الأساس)"]
-                        Entities["الكيانات"]
-                        VO["كائنات القيمة"]
-                    end
-                    subgraph App["طبقة التطبيق"]
-                        UseCases["حالات الاستخدام"]
-                    end
-                    subgraph Infra["طبقة البنية التحتية"]
-                        Repos["تطبيق المستودعات"]
-                        API["بيانات عن بعد"]
-                    end
-                    
-                    UseCases --> Entities
-                    Repos --> Entities
-                    App --> Domain
-                    Infra --> Domain
-                </div>
+                <div class="topic-group">
+                    <h3 class="topic-title"><i class="fas fa-info-circle"></i> نظرة عامة</h3>
+                    <p>يركز DDD على منطق المجال الأساسي وتفاعلات منطق المجال. ينطوي على تعاون بين الخبراء التقنيين وخبراء المجال.</p>
 
-                <h4>مثال على جذر التجميع (Aggregate Root)</h4>
-                <div class="mermaid">
-                    classDiagram
-                        class OrderAggregate {
-                            +String id
-                            +List~OrderItem~ items
-                            +addItem()
-                            +removeItem()
-                        }
-                        class OrderItem {
-                            +String productId
-                            +int quantity
-                        }
-                        class Address {
-                            +String street
-                            +String city
-                        }
+                    <div class="mermaid">
+                        graph TD
+                        subgraph Domain["طبقة المجال (الأساس)"]
+                            Entities["الكيانات"]
+                            VO["كائنات القيمة"]
+                        end
+                        subgraph App["طبقة التطبيق"]
+                            UseCases["حالات الاستخدام"]
+                        end
+                        subgraph Infra["طبقة البنية التحتية"]
+                            Repos["تطبيق المستودعات"]
+                            API["بيانات عن بعد"]
+                        end
                         
-                        OrderAggregate *-- OrderItem : يحتوي
-                        OrderAggregate *-- Address : كائن قيمة
-                </div>
-                <div class="card info-card" style="margin-top: 1rem;">
-                    <h3>💡 التصميم الاستراتيجي مقابل التكتيكي</h3>
-                    <p>يحدد <strong>التصميم الاستراتيجي</strong> الحدود واسعة النطاق (السياقات المحددة) وكيفية تعاون الفرق. يوفر <strong>التصميم التكتيكي</strong> الأنماط (الكيانات، كائنات القيمة، التجميعات) لبناء المنطق الداخلي لتلك السياقات.</p>
-                </div>
-
-                <div class="card analogy-card">
-                    <h3>🏢 تشبيه من العالم الحقيقي: شركة كبيرة</h3>
-                    <p>
-                        <strong>السياقات المحددة (الأقسام):</strong> المبيعات، الموارد البشرية، والهندسة هي أقسام منفصلة.<br>
-                        <strong>اللغة الموحدة (المصطلحات):</strong> كلمة "Lead" تعني شيئًا مختلفًا في المبيعات (عميل محتمل) مقابل الهندسة (مطور رئيسي).<br>
-                        <strong>رسم خرائط السياق (التواصل):</strong> كيف تتحدث هذه الأقسام مع بعضها البعض رسميًا.
-                    </p>
-                </div>
-
-                <div class="grid-2">
-                    <div class="card">
-                        <h3>الهيكل</h3>
-                        <ul class="structure-list">
-                            <li><strong>طبقة المجال:</strong> الكيانات، كائنات القيمة (Pure Dart)</li>
-                            <li><strong>طبقة التطبيق:</strong> حالات الاستخدام التي تنسق المنطق</li>
-                            <li><strong>طبقة البنية التحتية:</strong> مصادر البيانات، التنفيذ</li>
-                            <li><strong>طبقة العرض:</strong> واجهة المستخدم والمتحكمات</li>
-                        </ul>
+                        UseCases --> Entities
+                        Repos --> Entities
+                        App --> Domain
+                        Infra --> Domain
                     </div>
-                    <div class="card">
-                        <h3>الأفضل لـ</h3>
-                        <ul>
-                            <li>✅ تطبيقات المؤسسات</li>
-                            <li>✅ منطق العمل المعقد</li>
-                            <li>✅ المتطلبات المتطورة</li>
-                        </ul>
+
+                    <h4>مثال على جذر التجميع (Aggregate Root)</h4>
+                    <div class="mermaid">
+                        classDiagram
+                            class OrderAggregate {
+                                +String id
+                                +List~OrderItem~ items
+                                +addItem()
+                                +removeItem()
+                            }
+                            class OrderItem {
+                                +String productId
+                                +int quantity
+                            }
+                            class Address {
+                                +String street
+                                +String city
+                            }
+                            
+                            OrderAggregate *-- OrderItem : يحتوي
+                            OrderAggregate *-- Address : كائن قيمة
                     </div>
                 </div>
 
-                <div class="grid-2">
-                    <div class="card">
-                        <h3>✅ الإيجابيات</h3>
-                        <ul class="check-list">
-                            <li><strong>توافق الأعمال:</strong> الكود يتحدث نفس لغة خبراء الأعمال (اللغة الموحدة).</li>
-                            <li><strong>المرونة:</strong> تسمح السياقات المحددة (Bounded Contexts) بتطور أجزاء مختلفة من النظام بشكل مستقل.</li>
-                            <li><strong>نماذج غنية:</strong> تغليف المنطق داخل كائنات المجال، مما يمنع "النماذج الهزيلة".</li>
-                        </ul>
+                <div class="topic-group">
+                    <h3 class="topic-title"><i class="fas fa-lightbulb"></i> المفاهيم الأساسية</h3>
+                    <div class="card info-card">
+                        <h3>💡 التصميم الاستراتيجي مقابل التكتيكي</h3>
+                        <p>يحدد <strong>التصميم الاستراتيجي</strong> الحدود واسعة النطاق (السياقات المحددة) وكيفية تعاون الفرق. يوفر <strong>التصميم التكتيكي</strong> الأنماط (الكيانات، كائنات القيمة، التجميعات) لبناء المنطق الداخلي لتلك السياقات.</p>
                     </div>
-                    <div class="card">
-                        <h3>❌ السلبيات</h3>
-                        <ul class="check-list">
-                            <li><strong>التعقيد:</strong> منحنى تعلم عالٍ جدًا.</li>
-                            <li><strong>استهلاك الوقت:</strong> يتطلب تحليلًا ونمذجة عميقة قبل البرمجة.</li>
-                            <li><strong>الخبرة:</strong> يحتاج إلى مطورين يفهمون التقنية والمجال معًا.</li>
-                        </ul>
+
+                    <div class="card analogy-card">
+                        <h3>🏢 تشبيه من العالم الحقيقي: شركة كبيرة</h3>
+                        <p>
+                            <strong>السياقات المحددة (الأقسام):</strong> المبيعات، الموارد البشرية، والهندسة هي أقسام منفصلة.<br>
+                            <strong>اللغة الموحدة (المصطلحات):</strong> كلمة "Lead" تعني شيئًا مختلفًا في المبيعات (عميل محتمل) مقابل الهندسة (مطور رئيسي).<br>
+                            <strong>رسم خرائط السياق (التواصل):</strong> كيف تتحدث هذه الأقسام مع بعضها البعض رسميًا.
+                        </p>
                     </div>
                 </div>
 
-                <div class="code-block">
-                    <div class="code-header">هيكل المشروع</div>
-                    <pre><code>lib/
+                <div class="topic-group">
+                    <h3 class="topic-title"><i class="fas fa-chart-pie"></i> التحليل</h3>
+                    <div class="grid-2">
+                        <div class="card">
+                            <h3>الهيكل</h3>
+                            <ul class="structure-list">
+                                <li><strong>طبقة المجال:</strong> الكيانات، كائنات القيمة (Pure Dart)</li>
+                                <li><strong>طبقة التطبيق:</strong> حالات الاستخدام التي تنسق المنطق</li>
+                                <li><strong>طبقة البنية التحتية:</strong> مصادر البيانات، التنفيذ</li>
+                                <li><strong>طبقة العرض:</strong> واجهة المستخدم والمتحكمات</li>
+                            </ul>
+                        </div>
+                        <div class="card">
+                            <h3>الأفضل لـ</h3>
+                            <ul>
+                                <li>✅ تطبيقات المؤسسات</li>
+                                <li>✅ منطق العمل المعقد</li>
+                                <li>✅ المتطلبات المتطورة</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="card">
+                            <h3>✅ الإيجابيات</h3>
+                            <ul class="check-list">
+                                <li><strong>توافق الأعمال:</strong> الكود يتحدث نفس لغة خبراء الأعمال (اللغة الموحدة).</li>
+                                <li><strong>المرونة:</strong> تسمح السياقات المحددة (Bounded Contexts) بتطور أجزاء مختلفة من النظام بشكل مستقل.</li>
+                                <li><strong>نماذج غنية:</strong> تغليف المنطق داخل كائنات المجال، مما يمنع "النماذج الهزيلة".</li>
+                            </ul>
+                        </div>
+                        <div class="card">
+                            <h3>❌ السلبيات</h3>
+                            <ul class="check-list">
+                                <li><strong>التعقيد:</strong> منحنى تعلم عالٍ جدًا.</li>
+                                <li><strong>استهلاك الوقت:</strong> يتطلب تحليلًا ونمذجة عميقة قبل البرمجة.</li>
+                                <li><strong>الخبرة:</strong> يحتاج إلى مطورين يفهمون التقنية والمجال معًا.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="topic-group">
+                    <h3 class="topic-title"><i class="fas fa-code"></i> التنفيذ</h3>
+                    <div class="code-block">
+                        <div class="code-header">مثال: نموذج مجال غني</div>
+                        <pre><code class="language-dart">// كيان المجال مع منطق التحقق الذاتي
+class EmailAddress extends ValueObject&lt;String&gt; {
+  @override
+  final Either&lt;ValueFailure&lt;String&gt;, String&gt; value;
+
+  // منشئ خاص
+  const EmailAddress._(this.value);
+
+  // منشئ المصنع الذي يتحقق عند الإنشاء
+  factory EmailAddress(String input) {
+    return EmailAddress._(
+      validateEmailAddress(input),
+    );
+  }
+}</code></pre>
+                    </div>
+
+                    <div class="code-block">
+                        <div class="code-header">هيكل المشروع</div>
+                        <pre><code class="language-bash">lib/
 ├── main.dart
 ├── domain/              # قواعد عمل المؤسسة
 │   ├── auth/
@@ -504,6 +652,7 @@
 └── presentation/        # الأطر وبرامج التشغيل
     ├── sign_in/
     └── app_widget.dart</code></pre>
+                    </div>
                 </div>
             </section>
 

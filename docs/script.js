@@ -129,6 +129,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- Syntax Highlighting ---
+    if (window.hljs) {
+        hljs.highlightAll();
+    }
+
     // --- Copy to Clipboard ---
     document.querySelectorAll('.code-header').forEach(header => {
         // Wrap text in a span for styling
@@ -162,4 +167,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
         header.appendChild(button);
     });
+
+    // --- Mobile Menu Logic ---
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const sidebar = document.querySelector('.sidebar');
+    const mobileOverlay = document.getElementById('mobile-overlay');
+
+    function toggleMobileMenu() {
+        sidebar.classList.toggle('active');
+        mobileOverlay.classList.toggle('active');
+        document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
+    }
+
+    function closeMobileMenu() {
+        sidebar.classList.remove('active');
+        mobileOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+        mobileOverlay.addEventListener('click', closeMobileMenu);
+        
+        // Close menu when clicking a link
+        document.querySelectorAll('.sidebar nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    closeMobileMenu();
+                }
+            });
+        });
+    }
 });
