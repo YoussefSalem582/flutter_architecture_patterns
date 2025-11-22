@@ -8,6 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
 </head>
 <body>
     <div class="app-container">
@@ -75,6 +77,41 @@
                 </div>
                 <p>The Model-View-Controller pattern separates the application into three main components: Model, View, and Controller.</p>
                 
+                <div class="mermaid">
+                    graph LR
+                    View["View"] -- User Action --> Controller["Controller"]
+                    Controller -- Updates --> Model["Model"]
+                    Model -- Notifies --> View
+                </div>
+                
+                <h4>Interaction Flow</h4>
+                <div class="mermaid">
+                    sequenceDiagram
+                        participant User
+                        participant View
+                        participant Controller
+                        participant Model
+                        
+                        User->>View: Tap Button
+                        View->>Controller: Call Method
+                        Controller->>Model: Update Data
+                        Model-->>View: Notify Listeners
+                        View->>View: Rebuild
+                </div>
+                <div class="card info-card" style="margin-top: 1rem;">
+                    <h3>💡 Core Concept</h3>
+                    <p>The <strong>Controller</strong> acts as the "brain". It receives user input from the <strong>View</strong>, processes it (often updating the <strong>Model</strong>), and then tells the <strong>View</strong> to update. The View is passive and only displays what it's told.</p>
+                </div>
+
+                <div class="card analogy-card">
+                    <h3>🍔 Real World Analogy: The Restaurant</h3>
+                    <p>
+                        <strong>View (Customer):</strong> Sees the menu and asks for food.<br>
+                        <strong>Controller (Waiter):</strong> Takes the order to the kitchen and brings the food back.<br>
+                        <strong>Model (Kitchen):</strong> Prepares the food (data) and handles the ingredients (logic).
+                    </p>
+                </div>
+
                 <div class="grid-2">
                     <div class="card">
                         <h3>Structure</h3>
@@ -94,13 +131,37 @@
                     </div>
                 </div>
 
+                <div class="grid-2">
+                    <div class="card">
+                        <h3>✅ Pros</h3>
+                        <ul class="check-list">
+                            <li><strong>Simplicity:</strong> Easy to understand and implement.</li>
+                            <li><strong>Separation:</strong> Clear distinction between data (Model) and UI (View).</li>
+                            <li><strong>Development Speed:</strong> Great for getting an MVP out quickly.</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>❌ Cons</h3>
+                        <ul class="check-list">
+                            <li><strong>Tight Coupling:</strong> Views often depend directly on Models.</li>
+                            <li><strong>Massive Controllers:</strong> Controllers can become "God Objects" handling too much logic.</li>
+                            <li><strong>Harder Testing:</strong> UI logic mixed with business logic can be hard to test.</li>
+                        </ul>
+                    </div>
+                </div>
+
                 <div class="code-block">
                     <div class="code-header">Project Structure</div>
                     <pre><code>lib/
-├── models/          # Data models
-├── views/           # UI screens
-├── controllers/     # Business logic
-└── main.dart</code></pre>
+├── main.dart            # Entry point
+├── config/              # Routes, Themes
+├── models/              # Data Models
+│   └── user_model.dart
+├── views/               # UI Screens & Widgets
+│   ├── home_view.dart
+│   └── widgets/
+└── controllers/         # Business Logic
+    └── home_controller.dart</code></pre>
                 </div>
             </section>
 
@@ -110,6 +171,43 @@
                     <span class="complexity-badge medium">Moderate</span>
                 </div>
                 <p>MVVM facilitates a separation of development of the graphical user interface from the development of the business logic or back-end logic.</p>
+
+                <div class="mermaid">
+                    graph LR
+                    View["View"] -- Binds --> ViewModel["ViewModel"]
+                    ViewModel -- Updates --> Model["Model"]
+                    Model -- Notifies --> ViewModel
+                    ViewModel -- Notifies --> View
+                </div>
+
+                <h4>Data Binding Flow</h4>
+                <div class="mermaid">
+                    sequenceDiagram
+                        participant User
+                        participant View
+                        participant ViewModel
+                        participant Model
+                        
+                        User->>View: Input Data
+                        View->>ViewModel: Update Observable
+                        ViewModel->>Model: Save Data
+                        Model-->>ViewModel: Confirm
+                        ViewModel-->>View: Update State
+                </div>
+                <div class="card info-card" style="margin-top: 1rem;">
+                    <h3>💡 Core Concept</h3>
+                    <p>The <strong>ViewModel</strong> exposes streams of data (State) that the <strong>View</strong> listens to. When the Model changes, the ViewModel updates the stream, and the View automatically rebuilds. This removes the need for the ViewModel to manually update the View.</p>
+                </div>
+
+                <div class="card analogy-card">
+                    <h3>📺 Real World Analogy: The TV Setup</h3>
+                    <p>
+                        <strong>View (TV Screen):</strong> Displays whatever signal it receives.<br>
+                        <strong>ViewModel (Cable Box):</strong> Processes the raw signal into something the TV can show.<br>
+                        <strong>Model (Broadcast Station):</strong> The source of the raw signal/data.<br>
+                        <em>Note: The TV doesn't ask the Station for data; it just reacts to the Cable Box.</em>
+                    </p>
+                </div>
 
                 <div class="grid-2">
                     <div class="card">
@@ -130,15 +228,37 @@
                     </div>
                 </div>
 
+                <div class="grid-2">
+                    <div class="card">
+                        <h3>✅ Pros</h3>
+                        <ul class="check-list">
+                            <li><strong>Decoupling:</strong> View doesn't know about the Model, only the ViewModel.</li>
+                            <li><strong>Testability:</strong> ViewModels are easy to unit test (no UI dependency).</li>
+                            <li><strong>Reusability:</strong> ViewModels can be reused across different Views.</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>❌ Cons</h3>
+                        <ul class="check-list">
+                            <li><strong>Complexity:</strong> Requires understanding reactive programming (Streams/Observables).</li>
+                            <li><strong>Overhead:</strong> Can be overkill for very simple UI screens.</li>
+                            <li><strong>Debugging:</strong> Tracing data flows in reactive code can be tricky.</li>
+                        </ul>
+                    </div>
+                </div>
+
                 <div class="code-block">
                     <div class="code-header">Project Structure</div>
                     <pre><code>lib/
-├── models/          # Data entities
-├── views/           # UI screens
-├── viewmodels/      # Presentation logic
-├── bindings/        # Dependency injection
-├── routes/          # Navigation
-└── main.dart</code></pre>
+├── main.dart
+├── core/                # Constants, Utils
+├── models/              # Data Models
+├── views/               # UI Layer
+│   ├── login_view.dart
+│   └── widgets/
+├── viewmodels/          # State & Logic
+│   └── login_vm.dart
+└── services/            # API Calls, Local Storage</code></pre>
                 </div>
             </section>
 
@@ -148,6 +268,53 @@
                     <span class="complexity-badge hard">Complex</span>
                 </div>
                 <p>Clean Architecture separates the software into layers. The inner layers contain business rules, while the outer layers contain implementation details.</p>
+
+                <div class="mermaid">
+                    graph TD
+                    UI["UI / Flutter Widgets"] --> Presentation["Presentation Layer<br/>(BLoC / Controllers)"]
+                    Presentation --> Domain["Domain Layer<br/>(Use Cases / Entities)"]
+                    Data["Data Layer<br/>(Repositories / Data Sources)"] --> Domain
+                </div>
+
+                <h3>The Repository Pattern</h3>
+                <p>How data flows between layers without violating dependency rules.</p>
+                <div class="mermaid">
+                    graph LR
+                    UseCase["Use Case"] -- Calls --> RepoInterface["Repository Interface<br/>(Domain)"]
+                    RepoImpl["Repository Impl<br/>(Data)"] -- Implements --> RepoInterface
+                    RepoImpl -- Uses --> DataSource["Data Source<br/>(API/DB)"]
+                </div>
+
+                <h4>Control Flow (Request/Response)</h4>
+                <div class="mermaid">
+                    sequenceDiagram
+                        participant UI
+                        participant BLoC
+                        participant UseCase
+                        participant Repository
+                        participant DataSource
+                        
+                        UI->>BLoC: Add Event
+                        BLoC->>UseCase: Execute
+                        UseCase->>Repository: Get Data
+                        Repository->>DataSource: Fetch
+                        DataSource-->>Repository: Raw Data
+                        Repository-->>UseCase: Domain Entity
+                        UseCase-->>BLoC: Result
+                        BLoC-->>UI: Emit State
+                </div>
+                <div class="card info-card" style="margin-top: 1rem;">
+                    <h3>💡 The Dependency Rule</h3>
+                    <p>Source code dependencies can only point <strong>inwards</strong>. Nothing in an inner circle (like Domain) can know anything at all about something in an outer circle (like Presentation or Data). This makes the core logic immune to UI or Database changes.</p>
+                </div>
+
+                <div class="card analogy-card">
+                    <h3>🏰 Real World Analogy: The Castle</h3>
+                    <p>
+                        <strong>Domain (The King):</strong> Lives in the center, makes the rules, knows nothing about the outside world.<br>
+                        <strong>Presentation/Data (The Guards):</strong> Protect the King, handle messengers (API) and visitors (UI), and translate their requests into something the King understands.
+                    </p>
+                </div>
 
                 <div class="grid-2">
                     <div class="card">
@@ -168,17 +335,45 @@
                     </div>
                 </div>
 
+                <div class="grid-2">
+                    <div class="card">
+                        <h3>✅ Pros</h3>
+                        <ul class="check-list">
+                            <li><strong>Independence:</strong> UI, Database, and Frameworks can change without affecting business rules.</li>
+                            <li><strong>Testability:</strong> Business logic (Use Cases) can be tested in isolation.</li>
+                            <li><strong>Maintainability:</strong> Clear boundaries make it easier to navigate and fix bugs.</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>❌ Cons</h3>
+                        <ul class="check-list">
+                            <li><strong>Boilerplate:</strong> Requires writing many files (DTOs, Mappers, Interfaces).</li>
+                            <li><strong>Learning Curve:</strong> Concepts like Dependency Inversion can be hard to grasp.</li>
+                            <li><strong>Over-engineering:</strong> Too complex for simple CRUD apps.</li>
+                        </ul>
+                    </div>
+                </div>
+
                 <div class="code-block">
                     <div class="code-header">Project Structure</div>
                     <pre><code>lib/
-├── core/            # Shared resources
-├── features/
-│   ├── counter/
-│   │   ├── data/           # Data layer
-│   │   ├── domain/         # Domain layer
-│   │   └── presentation/   # Presentation layer
-│   └── notes/
-└── main.dart</code></pre>
+├── main.dart
+├── core/                # Error, Network, Utils
+├── config/              # Routes, Theme
+└── features/            # Feature-based
+    └── auth/
+        ├── data/        # Repositories Impl, DataSources, Models
+        │   ├── datasources/
+        │   ├── models/
+        │   └── repositories/
+        ├── domain/      # Entities, Repositories Interface, UseCases
+        │   ├── entities/
+        │   ├── repositories/
+        │   └── usecases/
+        └── presentation/# BLoC/Cubit, Pages, Widgets
+            ├── bloc/
+            ├── pages/
+            └── widgets/</code></pre>
                 </div>
             </section>
 
@@ -188,6 +383,61 @@
                     <span class="complexity-badge expert">Expert</span>
                 </div>
                 <p>DDD focuses on the core domain logic and domain logic interactions. It involves a collaboration between technical and domain experts.</p>
+
+                <div class="mermaid">
+                    graph TD
+                    subgraph Domain["Domain Layer (Core)"]
+                        Entities["Entities"]
+                        VO["Value Objects"]
+                    end
+                    subgraph App["Application Layer"]
+                        UseCases["Use Cases"]
+                    end
+                    subgraph Infra["Infrastructure Layer"]
+                        Repos["Repositories Impl"]
+                        API["Remote Data"]
+                    end
+                    
+                    UseCases --> Entities
+                    Repos --> Entities
+                    App --> Domain
+                    Infra --> Domain
+                </div>
+
+                <h4>Aggregate Root Example</h4>
+                <div class="mermaid">
+                    classDiagram
+                        class OrderAggregate {
+                            +String id
+                            +List~OrderItem~ items
+                            +addItem()
+                            +removeItem()
+                        }
+                        class OrderItem {
+                            +String productId
+                            +int quantity
+                        }
+                        class Address {
+                            +String street
+                            +String city
+                        }
+                        
+                        OrderAggregate *-- OrderItem : Contains
+                        OrderAggregate *-- Address : Value Object
+                </div>
+                <div class="card info-card" style="margin-top: 1rem;">
+                    <h3>💡 Strategic vs Tactical</h3>
+                    <p><strong>Strategic Design</strong> defines large-scale boundaries (Bounded Contexts) and how teams collaborate. <strong>Tactical Design</strong> provides the patterns (Entities, Value Objects, Aggregates) to build the internal logic of those contexts.</p>
+                </div>
+
+                <div class="card analogy-card">
+                    <h3>🏢 Real World Analogy: A Large Corporation</h3>
+                    <p>
+                        <strong>Bounded Contexts (Departments):</strong> Sales, HR, and Engineering are separate departments.<br>
+                        <strong>Ubiquitous Language (Jargon):</strong> "Lead" means something different in Sales (a potential customer) vs. Engineering (a senior dev).<br>
+                        <strong>Context Mapping (Communication):</strong> How these departments talk to each other formally.
+                    </p>
+                </div>
 
                 <div class="grid-2">
                     <div class="card">
@@ -209,14 +459,46 @@
                     </div>
                 </div>
 
+                <div class="grid-2">
+                    <div class="card">
+                        <h3>✅ Pros</h3>
+                        <ul class="check-list">
+                            <li><strong>Business Alignment:</strong> Code speaks the same language as business experts (Ubiquitous Language).</li>
+                            <li><strong>Flexibility:</strong> Bounded Contexts allow different parts of the system to evolve independently.</li>
+                            <li><strong>Rich Models:</strong> Encapsulates logic within domain objects, preventing "Anemic Models".</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>❌ Cons</h3>
+                        <ul class="check-list">
+                            <li><strong>Complexity:</strong> Extremely high learning curve.</li>
+                            <li><strong>Time Consuming:</strong> Requires deep analysis and modeling before coding.</li>
+                            <li><strong>Expertise:</strong> Needs developers who understand both tech and domain.</li>
+                        </ul>
+                    </div>
+                </div>
+
                 <div class="code-block">
                     <div class="code-header">Project Structure</div>
                     <pre><code>lib/
-├── domain/          # Pure business logic
-├── application/     # Use cases
-├── infrastructure/  # Implementation
-├── presentation/    # UI layer
-└── main.dart</code></pre>
+├── main.dart
+├── domain/              # Enterprise Business Rules
+│   ├── auth/
+│   │   ├── value_objects.dart
+│   │   └── i_auth_facade.dart
+│   └── core/
+├── infrastructure/      # Interface Adapters
+│   ├── auth/
+│   │   ├── auth_facade_impl.dart
+│   │   └── user_dtos.dart
+│   └── core/
+├── application/         # Application Business Rules
+│   └── auth/
+│       ├── sign_in_form_bloc.dart
+│       └── auth_bloc.dart
+└── presentation/        # Frameworks & Drivers
+    ├── sign_in/
+    └── app_widget.dart</code></pre>
                 </div>
             </section>
 
@@ -225,6 +507,28 @@
                     <h2>State Management: BLoC vs GetX</h2>
                 </div>
                 <p>This repository provides two complete implementations for each architecture pattern.</p>
+
+                <div class="grid-2">
+                    <div>
+                        <h4>BLoC Pattern</h4>
+                        <div class="mermaid">
+                            graph LR
+                            UI["UI"] -- Event --> Bloc["BLoC"]
+                            Bloc -- Process --> Logic["Business Logic"]
+                            Logic -- New State --> Bloc
+                            Bloc -- State --> UI
+                        </div>
+                    </div>
+                    <div>
+                        <h4>GetX Pattern</h4>
+                        <div class="mermaid">
+                            graph LR
+                            View["View (Obx)"] -- Calls --> Controller["GetxController"]
+                            Controller -- Updates --> State["Rx State"]
+                            State -- Rebuilds --> View
+                        </div>
+                    </div>
+                </div>
 
                 <div class="comparison-table-container">
                     <table class="comparison-table">
@@ -364,25 +668,54 @@
                     <div class="card resource-card">
                         <h3>Official Docs</h3>
                         <ul>
-                            <li><a href="https://flutter.dev/docs">Flutter Docs</a></li>
-                            <li><a href="https://bloclibrary.dev">BLoC Library</a></li>
-                            <li><a href="https://pub.dev/packages/get">GetX Package</a></li>
+                            <li><a href="https://flutter.dev/docs" target="_blank">Flutter Documentation</a></li>
+                            <li><a href="https://dart.dev/guides" target="_blank">Dart Language Guide</a></li>
+                            <li><a href="https://bloclibrary.dev" target="_blank">BLoC Library</a></li>
+                            <li><a href="https://pub.dev/packages/get" target="_blank">GetX Package</a></li>
+                            <li><a href="https://riverpod.dev" target="_blank">Riverpod</a></li>
                         </ul>
                     </div>
                     <div class="card resource-card">
-                        <h3>Books</h3>
+                        <h3>Architecture Articles</h3>
                         <ul>
-                            <li>Clean Architecture (Uncle Bob)</li>
-                            <li>Domain-Driven Design (Eric Evans)</li>
-                            <li>Flutter in Action</li>
+                            <li><a href="https://resocoder.com/flutter-clean-architecture-proposal/" target="_blank">Clean Architecture (Reso Coder)</a></li>
+                            <li><a href="https://verygood.ventures/blog/very-good-flutter-architecture" target="_blank">VGV Architecture</a></li>
+                            <li><a href="https://medium.com/flutter-community/flutter-architecture-provider-implementation-guide-d33133a9a4e8" target="_blank">Provider Architecture</a></li>
+                            <li><a href="https://codewithandrea.com/articles/flutter-architecture-riverpod-introduction/" target="_blank">Riverpod Architecture</a></li>
                         </ul>
                     </div>
                     <div class="card resource-card">
                         <h3>Video Channels</h3>
                         <ul>
-                            <li>Reso Coder</li>
-                            <li>Flutter Official</li>
-                            <li>Code With Andrea</li>
+                            <li><a href="https://www.youtube.com/flutterdev" target="_blank">Flutter Official</a></li>
+                            <li><a href="https://www.youtube.com/c/ResoCoder" target="_blank">Reso Coder</a></li>
+                            <li><a href="https://www.youtube.com/c/CodeWithAndrea" target="_blank">Code With Andrea</a></li>
+                            <li><a href="https://www.youtube.com/c/RobertBrunhage" target="_blank">Robert Brunhage</a></li>
+                            <li><a href="https://www.youtube.com/@HeyFlutter" target="_blank">HeyFlutter.com</a></li>
+                        </ul>
+                    </div>
+                    <div class="card resource-card">
+                        <h3>Books</h3>
+                        <ul>
+                            <li><a href="https://www.amazon.com/Clean-Architecture-Craftsmans-Software-Structure/dp/0134494164" target="_blank">Clean Architecture (Uncle Bob)</a></li>
+                            <li><a href="https://www.amazon.com/Domain-Driven-Design-Tackling-Complexity-Software/dp/0321125215" target="_blank">Domain-Driven Design</a></li>
+                            <li><a href="https://www.manning.com/books/flutter-in-action" target="_blank">Flutter in Action</a></li>
+                        </ul>
+                    </div>
+                    <div class="card resource-card">
+                        <h3>Community</h3>
+                        <ul>
+                            <li><a href="https://www.reddit.com/r/FlutterDev/" target="_blank">r/FlutterDev</a></li>
+                            <li><a href="https://discord.gg/flutter" target="_blank">Flutter Discord</a></li>
+                            <li><a href="https://medium.com/flutter-community" target="_blank">Flutter Community Medium</a></li>
+                        </ul>
+                    </div>
+                    <div class="card resource-card">
+                        <h3>Tools</h3>
+                        <ul>
+                            <li><a href="https://dartpad.dev/" target="_blank">DartPad</a></li>
+                            <li><a href="https://app.quicktype.io/" target="_blank">QuickType (JSON to Dart)</a></li>
+                            <li><a href="https://pub.dev/" target="_blank">Pub.dev</a></li>
                         </ul>
                     </div>
                 </div>
@@ -415,10 +748,14 @@
             </section>
 
             <footer>
-                <p>Created by <a href="https://github.com/YoussefSalem582">YoussefSalem582</a> | Flutter Architecture Patterns</p>
+                <p>Built with ❤️ for the Flutter Community</p>
+                <p>Open source on <a href="https://github.com/yara/flutter_architecture_patterns">GitHub</a></p>
             </footer>
+
+            <button class="back-to-top" aria-label="Back to top">↑</button>
+
+            <script src="script.js"></script>
         </main>
     </div>
-    <script src="script.js"></script>
 </body>
 </html>
