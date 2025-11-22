@@ -59,8 +59,11 @@ body {
 .sidebar {
     width: 280px;
     background-color: var(--sidebar-bg);
-    border-right: 1px solid var(--border-color);
+    border-inline-end: 1px solid var(--border-color);
     position: fixed;
+    top: 0;
+    bottom: 0;
+    inset-inline-start: 0;
     height: 100vh;
     overflow-y: auto;
     display: flex;
@@ -94,11 +97,31 @@ body {
     border: 1px solid var(--border-color);
 }
 
-/* Theme Toggle */
+/* Theme & Lang Toggle */
 .theme-toggle-container {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     margin-bottom: 1rem;
+    gap: 0.5rem;
+}
+
+.lang-toggle {
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.4rem 0.8rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    transition: var(--transition);
+    font-family: 'Inter', sans-serif;
+}
+
+.lang-toggle:hover {
+    background-color: var(--bg-color);
+    color: var(--primary-color);
+    border-color: var(--primary-color);
 }
 
 .theme-toggle {
@@ -117,6 +140,7 @@ body {
 .theme-toggle:hover {
     background-color: var(--bg-color);
     color: var(--primary-color);
+    border-color: var(--primary-color);
 }
 
 .sun-icon { display: none; }
@@ -141,7 +165,7 @@ nav li {
     margin-top: 1.5rem;
     margin-bottom: 0.75rem;
     font-weight: 600;
-    padding-left: 0.75rem;
+    padding-inline-start: 0.75rem;
 }
 
 nav a {
@@ -188,7 +212,7 @@ nav a.active {
 
 /* Main Content */
 .content {
-    margin-left: 280px;
+    margin-inline-start: 280px;
     flex: 1;
     padding: 3rem 4rem;
     max-width: 1200px;
@@ -268,7 +292,7 @@ section {
 }
 
 .info-card {
-    border-left: 4px solid var(--primary-color);
+    border-inline-start: 4px solid var(--primary-color);
 }
 
 .grid-2 {
@@ -325,7 +349,7 @@ h3 {
 
 ul {
     list-style-position: inside;
-    margin-left: 0.5rem;
+    margin-inline-start: 0.5rem;
 }
 
 .structure-list li {
@@ -345,7 +369,7 @@ ul {
 
 .check-list li {
     position: relative;
-    padding-left: 1.5rem;
+    padding-inline-start: 1.5rem;
     margin-bottom: 0.75rem;
     color: var(--text-secondary);
 }
@@ -353,7 +377,7 @@ ul {
 .check-list li::before {
     content: "✓";
     position: absolute;
-    left: 0;
+    inset-inline-start: 0;
     color: var(--success-color);
     font-weight: bold;
 }
@@ -383,6 +407,7 @@ ul {
     overflow: hidden;
     margin-top: 1.5rem;
     border: 1px solid var(--border-color);
+    direction: ltr; /* Code is always LTR */
 }
 
 .code-header {
@@ -423,7 +448,7 @@ code {
 .comparison-table th,
 .comparison-table td {
     padding: 1rem;
-    text-align: left;
+    text-align: start;
     border-bottom: 1px solid var(--border-color);
     color: var(--text-secondary);
 }
@@ -462,7 +487,7 @@ code {
 
 .decision-card li {
     margin-bottom: 0.75rem;
-    padding-left: 1.5rem;
+    padding-inline-start: 1.5rem;
     position: relative;
     color: var(--text-secondary);
 }
@@ -470,7 +495,7 @@ code {
 .decision-card li::before {
     content: "•";
     position: absolute;
-    left: 0;
+    inset-inline-start: 0;
     font-weight: bold;
     color: var(--text-color);
 }
@@ -572,13 +597,13 @@ footer a {
         width: 100%;
         height: auto;
         position: relative;
-        border-right: none;
+        border-inline-end: none;
         border-bottom: 1px solid var(--border-color);
         padding: 1rem;
     }
 
     .content {
-        margin-left: 0;
+        margin-inline-start: 0;
         padding: 2rem 1.5rem;
     }
 

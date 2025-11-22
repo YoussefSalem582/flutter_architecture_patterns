@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أنماط هندسة Flutter</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Cairo', 'Inter', sans-serif; }
+        .code-block { direction: ltr; text-align: left; }
+        .code-header { text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="logo">
+                <h1>أنماط Flutter</h1>
+                <span class="version">v1.0</span>
+            </div>
+            <div class="theme-toggle-container">
+                <a href="index.html" class="lang-toggle" aria-label="Switch to English">English</a>
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Dark Mode">
+                    <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                    <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                </button>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#intro" class="active">مقدمة</a></li>
+                    <li class="section-title">الأنماط المعمارية</li>
+                    <li><a href="#mvc">نمط MVC</a></li>
+                    <li><a href="#mvvm">نمط MVVM</a></li>
+                    <li><a href="#clean">العمارة النظيفة</a></li>
+                    <li><a href="#ddd">نمط DDD</a></li>
+                    <li class="section-title">إدارة الحالة</li>
+                    <li><a href="#comparison">مقارنة BLoC و GetX</a></li>
+                    <li><a href="#performance">الأداء</a></li>
+                    <li><a href="#devex">تجربة المطور</a></li>
+                    <li class="section-title">الموارد</li>
+                    <li><a href="#best-practices">أفضل الممارسات</a></li>
+                    <li><a href="#learning">التعلم</a></li>
+                    <li><a href="#troubleshooting">استكشاف الأخطاء</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="https://github.com/YoussefSalem582/flutter_architecture_patterns" target="_blank" class="github-link">
+                    <svg height="20" width="20" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+                    </svg>
+                    عرض على GitHub
+                </a>
+            </div>
+        </aside>
+
+        <main class="content">
+            <section id="intro">
+                <div class="hero">
+                    <h1>أنماط هندسة Flutter</h1>
+                    <p class="subtitle">دليل شامل لبناء تطبيقات Flutter قابلة للتطوير باستخدام MVC و MVVM و Clean Architecture و DDD.</p>
+                    <div class="badges">
+                        <span class="badge flutter">Flutter 3.9.2+</span>
+                        <span class="badge dart">Dart 3.9.2+</span>
+                    </div>
+                </div>
+                
+                <div class="card info-card">
+                    <h3>🎯 الهدف</h3>
+                    <p>ينفذ هذا المشروع <strong>نفس مجموعة الميزات</strong> (عداد، ملاحظات، تبديل السمة) عبر <strong>أربعة أنماط معمارية مختلفة</strong> باستخدام <strong>حلين لإدارة الحالة</strong> (BLoC و GetX). هذا يسمح بمقارنة مباشرة ودقيقة.</p>
+                </div>
+            </section>
+
+            <section id="mvc">
+                <div class="section-header">
+                    <h2>MVC (النموذج-العرض-المتحكم)</h2>
+                    <span class="complexity-badge easy">بسيط</span>
+                </div>
+                <p>يفصل نمط Model-View-Controller التطبيق إلى ثلاثة مكونات رئيسية: النموذج والعرض والمتحكم.</p>
+                
+                <div class="grid-2">
+                    <div class="card">
+                        <h3>الهيكل</h3>
+                        <ul class="structure-list">
+                            <li><strong>النموذج (Model):</strong> البيانات ومنطق العمل</li>
+                            <li><strong>العرض (View):</strong> مكونات واجهة المستخدم</li>
+                            <li><strong>المتحكم (Controller):</strong> يتوسط بين النموذج والعرض</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>الأفضل لـ</h3>
+                        <ul>
+                            <li>✅ التطبيقات الصغيرة والمتوسطة</li>
+                            <li>✅ النماذج الأولية السريعة</li>
+                            <li>✅ تعلم أساسيات Flutter</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-header">هيكل المشروع</div>
+                    <pre><code>lib/
+├── models/          # نماذج البيانات
+├── views/           # شاشات واجهة المستخدم
+├── controllers/     # منطق العمل
+└── main.dart</code></pre>
+                </div>
+            </section>
+
+            <section id="mvvm">
+                <div class="section-header">
+                    <h2>MVVM (النموذج-العرض-نموذج العرض)</h2>
+                    <span class="complexity-badge medium">متوسط</span>
+                </div>
+                <p>يسهل MVVM فصل تطوير واجهة المستخدم الرسومية عن تطوير منطق العمل أو المنطق الخلفي.</p>
+
+                <div class="grid-2">
+                    <div class="card">
+                        <h3>الهيكل</h3>
+                        <ul class="structure-list">
+                            <li><strong>النموذج (Model):</strong> كيانات البيانات</li>
+                            <li><strong>العرض (View):</strong> مكونات واجهة المستخدم</li>
+                            <li><strong>نموذج العرض (ViewModel):</strong> منطق العرض مع القابلة للملاحظة</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>الأفضل لـ</h3>
+                        <ul>
+                            <li>✅ التطبيقات المتوسطة إلى الكبيرة</li>
+                            <li>✅ حالة واجهة المستخدم المعقدة</li>
+                            <li>✅ البرمجة التفاعلية</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-header">هيكل المشروع</div>
+                    <pre><code>lib/
+├── models/          # كيانات البيانات
+├── views/           # شاشات واجهة المستخدم
+├── viewmodels/      # منطق العرض
+├── bindings/        # حقن التبعية
+├── routes/          # التنقل
+└── main.dart</code></pre>
+                </div>
+            </section>
+
+            <section id="clean">
+                <div class="section-header">
+                    <h2>العمارة النظيفة (Clean Architecture)</h2>
+                    <span class="complexity-badge hard">معقد</span>
+                </div>
+                <p>تفصل العمارة النظيفة البرنامج إلى طبقات. تحتوي الطبقات الداخلية على قواعد العمل، بينما تحتوي الطبقات الخارجية على تفاصيل التنفيذ.</p>
+
+                <div class="grid-2">
+                    <div class="card">
+                        <h3>الهيكل</h3>
+                        <ul class="structure-list">
+                            <li><strong>طبقة البيانات:</strong> المستودعات، مصادر البيانات، النماذج</li>
+                            <li><strong>طبقة المجال:</strong> حالات الاستخدام، الكيانات، الواجهات</li>
+                            <li><strong>طبقة العرض:</strong> المتحكمات، العروض، الروابط</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>الأفضل لـ</h3>
+                        <ul>
+                            <li>✅ تطبيقات كبيرة قابلة للتطوير</li>
+                            <li>✅ فرق متعددة</li>
+                            <li>✅ متطلبات اختبار عالية</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-header">هيكل المشروع</div>
+                    <pre><code>lib/
+├── core/            # الموارد المشتركة
+├── features/
+│   ├── counter/
+│   │   ├── data/           # طبقة البيانات
+│   │   ├── domain/         # طبقة المجال
+│   │   └── presentation/   # طبقة العرض
+│   └── notes/
+└── main.dart</code></pre>
+                </div>
+            </section>
+
+            <section id="ddd">
+                <div class="section-header">
+                    <h2>DDD (التصميم القائم على المجال)</h2>
+                    <span class="complexity-badge expert">خبير</span>
+                </div>
+                <p>يركز DDD على منطق المجال الأساسي وتفاعلات منطق المجال. ينطوي على تعاون بين الخبراء التقنيين وخبراء المجال.</p>
+
+                <div class="grid-2">
+                    <div class="card">
+                        <h3>الهيكل</h3>
+                        <ul class="structure-list">
+                            <li><strong>طبقة المجال:</strong> الكيانات، كائنات القيمة (Pure Dart)</li>
+                            <li><strong>طبقة التطبيق:</strong> حالات الاستخدام التي تنسق المنطق</li>
+                            <li><strong>طبقة البنية التحتية:</strong> مصادر البيانات، التنفيذ</li>
+                            <li><strong>طبقة العرض:</strong> واجهة المستخدم والمتحكمات</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>الأفضل لـ</h3>
+                        <ul>
+                            <li>✅ تطبيقات المؤسسات</li>
+                            <li>✅ منطق العمل المعقد</li>
+                            <li>✅ المتطلبات المتطورة</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-header">هيكل المشروع</div>
+                    <pre><code>lib/
+├── domain/          # منطق العمل النقي
+├── application/     # حالات الاستخدام
+├── infrastructure/  # التنفيذ
+├── presentation/    # طبقة واجهة المستخدم
+└── main.dart</code></pre>
+                </div>
+            </section>
+
+            <section id="comparison">
+                <div class="section-header">
+                    <h2>إدارة الحالة: BLoC مقابل GetX</h2>
+                </div>
+                <p>يوفر هذا المستودع تنفيذين كاملين لكل نمط معماري.</p>
+
+                <div class="comparison-table-container">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>الميزة</th>
+                                <th>BLoC (مكون منطق العمل)</th>
+                                <th>GetX</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>الفلسفة</strong></td>
+                                <td>قائم على التدفق (Stream)، يمكن التنبؤ به، صريح</td>
+                                <td>نمط المراقب، بسيط، منتج</td>
+                            </tr>
+                            <tr>
+                                <td><strong>منحنى التعلم</strong></td>
+                                <td><span class="badge warning">شديد الانحدار</span></td>
+                                <td><span class="badge success">سهل</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>الكود النمطي</strong></td>
+                                <td>عالي (الأحداث، الحالات)</td>
+                                <td>منخفض (أقل كود)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>الأداء</strong></td>
+                                <td>ممتاز ⚡⚡⚡⚡⚡</td>
+                                <td>ممتاز ⚡⚡⚡⚡⚡</td>
+                            </tr>
+                            <tr>
+                                <td><strong>قابلية الاختبار</strong></td>
+                                <td>ممتاز (blocTest)</td>
+                                <td>جيد</td>
+                            </tr>
+                            <tr>
+                                <td><strong>الأفضل لـ</strong></td>
+                                <td>الفرق الكبيرة، العمارة الصارمة</td>
+                                <td>التطوير السريع، المنتجات القابلة للتطبيق (MVP)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="performance">
+                <div class="section-header">
+                    <h2>تحليل الأداء</h2>
+                </div>
+                <p>مقارنة تفصيلية لاستخدام الذاكرة وأوقات البناء ومعدلات الإطارات.</p>
+                
+                <div class="grid-2">
+                    <div class="card">
+                        <h3>استخدام الذاكرة (خامل)</h3>
+                        <ul class="stat-list">
+                            <li><strong>GetX:</strong> ~45MB</li>
+                            <li><strong>BLoC:</strong> ~48MB</li>
+                            <li><strong>Provider:</strong> ~46MB</li>
+                        </ul>
+                        <p class="note">GetX أخف قليلاً بسبب عدم وجود Streams.</p>
+                    </div>
+                    <div class="card">
+                        <h3>وقت البدء البارد</h3>
+                        <ul class="stat-list">
+                            <li><strong>GetX:</strong> ~400ms</li>
+                            <li><strong>BLoC:</strong> ~420ms</li>
+                            <li><strong>Provider:</strong> ~410ms</li>
+                        </ul>
+                        <p class="note">الفروق ضئيلة بالنسبة لمعظم التطبيقات.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="devex">
+                <div class="section-header">
+                    <h2>تجربة المطور</h2>
+                </div>
+                <div class="grid-2">
+                    <div class="card">
+                        <h3>تجربة BLoC</h3>
+                        <ul>
+                            <li>✅ <strong>يمكن التنبؤ به:</strong> تدفق البيانات أحادي الاتجاه يجعل التصحيح سهلاً.</li>
+                            <li>✅ <strong>الأدوات:</strong> ملحقات VS Code ممتازة وتكامل DevTools.</li>
+                            <li>❌ <strong>الكود النمطي:</strong> يتطلب كتابة الأحداث والحالات و BLoCs.</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>تجربة GetX</h3>
+                        <ul>
+                            <li>✅ <strong>السرعة:</strong> سريع جداً لكتابة الميزات. كود أقل.</li>
+                            <li>✅ <strong>الكل في واحد:</strong> يشمل التنقل، الحوارات، Snackbars، إلخ.</li>
+                            <li>❌ <strong>السحر:</strong> قد يكون من الصعب تصحيح سلوك "السحر".</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="best-practices">
+                <div class="section-header">
+                    <h2>أفضل الممارسات</h2>
+                </div>
+                <div class="card">
+                    <h3>نصائح عامة لـ Flutter</h3>
+                    <ul class="check-list">
+                        <li>قسّم الأدوات المعقدة إلى مكونات أصغر قابلة لإعادة الاستخدام.</li>
+                        <li>استخدم <code>const</code> constructors حيثما أمكن لتحسين الأداء.</li>
+                        <li>تعامل مع الأخطاء ببراعة واعرض رسائل سهلة الاستخدام.</li>
+                        <li>حافظ على تحديث التبعيات.</li>
+                    </ul>
+                </div>
+                <div class="grid-2">
+                    <div class="card">
+                        <h3>العمارة النظيفة</h3>
+                        <ul class="check-list">
+                            <li>حافظ على استقلالية الطبقات.</li>
+                            <li>يجب ألا تحتوي طبقة المجال على أي تبعيات لـ Flutter.</li>
+                            <li>استخدم المستودعات لتجريد مصادر البيانات.</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>إدارة الحالة</h3>
+                        <ul class="check-list">
+                            <li>استخدم فئات حالة غير قابلة للتغيير (Equatable).</li>
+                            <li>أبقِ المنطق خارج واجهة المستخدم (Widgets).</li>
+                            <li>استخدم <code>buildWhen</code> / <code>listenWhen</code> لتحسين إعادة البناء.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="learning">
+                <div class="section-header">
+                    <h2>مصادر التعلم</h2>
+                </div>
+                <div class="grid-3">
+                    <div class="card resource-card">
+                        <h3>الوثائق الرسمية</h3>
+                        <ul>
+                            <li><a href="https://flutter.dev/docs">وثائق Flutter</a></li>
+                            <li><a href="https://bloclibrary.dev">مكتبة BLoC</a></li>
+                            <li><a href="https://pub.dev/packages/get">حزمة GetX</a></li>
+                        </ul>
+                    </div>
+                    <div class="card resource-card">
+                        <h3>كتب</h3>
+                        <ul>
+                            <li>Clean Architecture (Uncle Bob)</li>
+                            <li>Domain-Driven Design (Eric Evans)</li>
+                            <li>Flutter in Action</li>
+                        </ul>
+                    </div>
+                    <div class="card resource-card">
+                        <h3>قنوات الفيديو</h3>
+                        <ul>
+                            <li>Reso Coder</li>
+                            <li>Flutter Official</li>
+                            <li>Code With Andrea</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="troubleshooting">
+                <div class="section-header">
+                    <h2>استكشاف الأخطاء وإصلاحها</h2>
+                </div>
+                <div class="accordion">
+                    <div class="accordion-item">
+                        <div class="accordion-header">لم يتم العثور على BLoC/Cubit في السياق</div>
+                        <div class="accordion-content">
+                            <p>تأكد من أنك قمت بتغليف شجرة الأدوات الخاصة بك بـ <code>BlocProvider</code>. إذا كنت تنتقل إلى مسار جديد، مرر BLoC الموجود باستخدام <code>BlocProvider.value</code>.</p>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <div class="accordion-header">الحالة لا تتحدث</div>
+                        <div class="accordion-content">
+                            <p>تأكد من أنك تقوم بإصدار <strong>نسخة جديدة</strong> من الحالة. إذا كنت تستخدم Equatable، تأكد من تعيين props بشكل صحيح. لا تقم بتغيير الحالة مباشرة.</p>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <div class="accordion-header">لم يتم تهيئة تخزين HydratedBloc</div>
+                        <div class="accordion-content">
+                            <p>استدعِ <code>HydratedStorage.build</code> في دالة <code>main()</code> الخاصة بك قبل <code>runApp()</code>. تأكد من استدعاء <code>WidgetsFlutterBinding.ensureInitialized()</code> أولاً.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <footer>
+                <p>تم الإنشاء بواسطة <a href="https://github.com/YoussefSalem582">YoussefSalem582</a> | أنماط هندسة Flutter</p>
+            </footer>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
