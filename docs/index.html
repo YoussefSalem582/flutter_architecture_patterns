@@ -52,7 +52,7 @@
                     <li class="nav-group">
                         <div class="nav-group-title"><i class="fas fa-code-branch"></i> State Management</div>
                         <ul class="nav-sublist">
-                            <li><a href="#comparison" class="nav-item"><i class="fas fa-balance-scale"></i> BLoC vs GetX</a></li>
+                            <li><a href="#comparison" class="nav-item"><i class="fas fa-balance-scale"></i> BLoC vs GetX vs Riverpod</a></li>
                             <li><a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a></li>
                             <li><a href="#devex" class="nav-item"><i class="fas fa-laptop-code"></i> Dev Experience</a></li>
                         </ul>
@@ -91,7 +91,7 @@
                 
                 <div class="card info-card">
                     <h3>🎯 Goal</h3>
-                    <p>This project implements the <strong>same set of features</strong> (Counter, Notes, Theme Toggle) across <strong>four different architecture patterns</strong> using <strong>two state management solutions</strong> (BLoC & GetX). This allows for a direct, apples-to-apples comparison.</p>
+                    <p>This project implements the <strong>same set of features</strong> (Counter, Notes, Theme Toggle) across <strong>four different architecture patterns</strong> using <strong>three state management solutions</strong> (BLoC, GetX & Riverpod). This allows for a direct, apples-to-apples comparison.</p>
                 </div>
             </section>
 
@@ -657,7 +657,7 @@ class EmailAddress extends ValueObject&lt;String&gt; {
                 </div>
                 <p>This repository provides two complete implementations for each architecture pattern.</p>
 
-                <div class="grid-2">
+                <div class="grid-3">
                     <div>
                         <h4>BLoC Pattern</h4>
                         <div class="mermaid">
@@ -677,6 +677,15 @@ class EmailAddress extends ValueObject&lt;String&gt; {
                             State -- Rebuilds --> View
                         </div>
                     </div>
+                    <div>
+                        <h4>Riverpod Pattern</h4>
+                        <div class="mermaid">
+                            graph LR
+                            UI["UI (Consumer)"] -- Reads/Watches --> Provider["Provider"]
+                            Provider -- Exposes --> State["State"]
+                            State -- Rebuilds --> UI
+                        </div>
+                    </div>
                 </div>
 
                 <div class="comparison-table-container">
@@ -684,40 +693,47 @@ class EmailAddress extends ValueObject&lt;String&gt; {
                         <thead>
                             <tr>
                                 <th>Feature</th>
-                                <th>BLoC (Business Logic Component)</th>
+                                <th>BLoC</th>
                                 <th>GetX</th>
+                                <th>Riverpod</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td><strong>Philosophy</strong></td>
-                                <td>Stream-based, predictable, explicit</td>
-                                <td>Observer pattern, simple, productive</td>
+                                <td>Stream-based, predictable</td>
+                                <td>Observer pattern, simple</td>
+                                <td>Provider graph, safe</td>
                             </tr>
                             <tr>
                                 <td><strong>Learning Curve</strong></td>
                                 <td><span class="badge warning">Steep</span></td>
                                 <td><span class="badge success">Easy</span></td>
+                                <td><span class="badge warning">Moderate</span></td>
                             </tr>
                             <tr>
                                 <td><strong>Boilerplate</strong></td>
-                                <td>High (Events, States)</td>
-                                <td>Low (Minimal code)</td>
+                                <td>High</td>
+                                <td>Low</td>
+                                <td>Moderate</td>
                             </tr>
                             <tr>
                                 <td><strong>Performance</strong></td>
                                 <td>Excellent ⚡⚡⚡⚡⚡</td>
                                 <td>Excellent ⚡⚡⚡⚡⚡</td>
+                                <td>Excellent ⚡⚡⚡⚡⚡</td>
                             </tr>
                             <tr>
                                 <td><strong>Testability</strong></td>
-                                <td>Excellent (blocTest)</td>
+                                <td>Excellent</td>
                                 <td>Good</td>
+                                <td>Excellent</td>
                             </tr>
                             <tr>
                                 <td><strong>Best For</strong></td>
-                                <td>Large teams, strict architecture</td>
-                                <td>Rapid development, MVPs</td>
+                                <td>Large teams, strict arch</td>
+                                <td>Rapid development</td>
+                                <td>Scalable, type-safe apps</td>
                             </tr>
                         </tbody>
                     </table>
@@ -732,20 +748,20 @@ class EmailAddress extends ValueObject&lt;String&gt; {
                 
                 <div class="grid-2">
                     <div class="card">
-                        <h3>Memory Usage (Idle)</h3>
+                        <h3>Memory Usage (Initial)</h3>
                         <ul class="stat-list">
-                            <li><strong>GetX:</strong> ~45MB</li>
-                            <li><strong>BLoC:</strong> ~48MB</li>
-                            <li><strong>Provider:</strong> ~46MB</li>
+                            <li><strong>BLoC:</strong> ~45MB</li>
+                            <li><strong>Riverpod:</strong> ~46MB</li>
+                            <li><strong>GetX:</strong> ~48MB</li>
                         </ul>
-                        <p class="note">GetX is slightly lighter due to lack of streams.</p>
+                        <p class="note">BLoC is slightly lighter initially.</p>
                     </div>
                     <div class="card">
                         <h3>Cold Start Time</h3>
                         <ul class="stat-list">
-                            <li><strong>GetX:</strong> ~400ms</li>
-                            <li><strong>BLoC:</strong> ~420ms</li>
-                            <li><strong>Provider:</strong> ~410ms</li>
+                            <li><strong>GetX:</strong> ~820ms</li>
+                            <li><strong>Riverpod:</strong> ~830ms</li>
+                            <li><strong>BLoC:</strong> ~850ms</li>
                         </ul>
                         <p class="note">Differences are negligible for most apps.</p>
                     </div>
@@ -756,7 +772,7 @@ class EmailAddress extends ValueObject&lt;String&gt; {
                 <div class="section-header">
                     <h2>Developer Experience</h2>
                 </div>
-                <div class="grid-2">
+                <div class="grid-3">
                     <div class="card">
                         <h3>BLoC Experience</h3>
                         <ul>
@@ -771,6 +787,14 @@ class EmailAddress extends ValueObject&lt;String&gt; {
                             <li>✅ <strong>Speed:</strong> Very fast to write features. Less code.</li>
                             <li>✅ <strong>All-in-One:</strong> Includes Navigation, Dialogs, Snackbars, etc.</li>
                             <li>❌ <strong>Magic:</strong> Can be harder to debug "magic" behavior.</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>Riverpod Experience</h3>
+                        <ul>
+                            <li>✅ <strong>Safety:</strong> Compile-time safety prevents common runtime errors.</li>
+                            <li>✅ <strong>Flexibility:</strong> Easy to combine and compose providers.</li>
+                            <li>❌ <strong>Complexity:</strong> Learning curve for modifiers and code generation.</li>
                         </ul>
                     </div>
                 </div>
@@ -879,6 +903,12 @@ class EmailAddress extends ValueObject&lt;String&gt; {
                         <div class="accordion-header">BLoC/Cubit not found in context</div>
                         <div class="accordion-content">
                             <p>Ensure you have wrapped your widget tree with <code>BlocProvider</code>. If navigating to a new route, pass the existing BLoC using <code>BlocProvider.value</code>.</p>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <div class="accordion-header">Riverpod Provider not found</div>
+                        <div class="accordion-content">
+                            <p>Ensure you have wrapped your root widget with <code>ProviderScope</code>. This is required for Riverpod to work.</p>
                         </div>
                     </div>
                     <div class="accordion-item">

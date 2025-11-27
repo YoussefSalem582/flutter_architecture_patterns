@@ -57,7 +57,7 @@
                     <li class="nav-group">
                         <div class="nav-group-title"><i class="fas fa-code-branch"></i> إدارة الحالة</div>
                         <ul class="nav-sublist">
-                            <li><a href="#comparison" class="nav-item"><i class="fas fa-balance-scale"></i> مقارنة BLoC و GetX</a></li>
+                            <li><a href="#comparison" class="nav-item"><i class="fas fa-balance-scale"></i> مقارنة BLoC و GetX و Riverpod</a></li>
                             <li><a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> الأداء</a></li>
                             <li><a href="#devex" class="nav-item"><i class="fas fa-laptop-code"></i> تجربة المطور</a></li>
                         </ul>
@@ -96,7 +96,7 @@
                 
                 <div class="card info-card">
                     <h3>🎯 الهدف</h3>
-                    <p>ينفذ هذا المشروع <strong>نفس مجموعة الميزات</strong> (عداد، ملاحظات، تبديل السمة) عبر <strong>أربعة أنماط معمارية مختلفة</strong> باستخدام <strong>حلين لإدارة الحالة</strong> (BLoC و GetX). هذا يسمح بمقارنة مباشرة ودقيقة.</p>
+                    <p>ينفذ هذا المشروع <strong>نفس مجموعة الميزات</strong> (عداد، ملاحظات، تبديل السمة) عبر <strong>أربعة أنماط معمارية مختلفة</strong> باستخدام <strong>ثلاثة حلول لإدارة الحالة</strong> (BLoC و GetX و Riverpod). هذا يسمح بمقارنة مباشرة ودقيقة.</p>
                 </div>
             </section>
 
@@ -662,7 +662,7 @@ class EmailAddress extends ValueObject&lt;String&gt; {
                 </div>
                 <p>يوفر هذا المستودع تنفيذين كاملين لكل نمط معماري.</p>
 
-                <div class="grid-2">
+                <div class="grid-3">
                     <div>
                         <h4>نمط BLoC</h4>
                         <div class="mermaid">
@@ -682,6 +682,15 @@ class EmailAddress extends ValueObject&lt;String&gt; {
                             State -- تحديث تلقائي --> View
                         </div>
                     </div>
+                    <div>
+                        <h4>نمط Riverpod</h4>
+                        <div class="mermaid">
+                            graph LR
+                            UI["واجهة المستخدم (Consumer)"] -- يقرأ/يراقب --> Provider["المزود (Provider)"]
+                            Provider -- يعرض --> State["الحالة"]
+                            State -- يعيد البناء --> UI
+                        </div>
+                    </div>
                 </div>
 
                 <div class="comparison-table-container">
@@ -689,40 +698,47 @@ class EmailAddress extends ValueObject&lt;String&gt; {
                         <thead>
                             <tr>
                                 <th>الميزة</th>
-                                <th>BLoC (مكون منطق العمل)</th>
+                                <th>BLoC</th>
                                 <th>GetX</th>
+                                <th>Riverpod</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td><strong>الفلسفة</strong></td>
-                                <td>قائم على التدفق (Stream)، يمكن التنبؤ به، صريح</td>
-                                <td>نمط المراقب، بسيط، منتج</td>
+                                <td>قائم على التدفق، يمكن التنبؤ به</td>
+                                <td>نمط المراقب، بسيط</td>
+                                <td>رسم بياني للمزود، آمن</td>
                             </tr>
                             <tr>
                                 <td><strong>منحنى التعلم</strong></td>
                                 <td><span class="badge warning">شديد الانحدار</span></td>
                                 <td><span class="badge success">سهل</span></td>
+                                <td><span class="badge warning">متوسط</span></td>
                             </tr>
                             <tr>
                                 <td><strong>الكود النمطي</strong></td>
-                                <td>عالي (الأحداث، الحالات)</td>
-                                <td>منخفض (أقل كود)</td>
+                                <td>عالي</td>
+                                <td>منخفض</td>
+                                <td>متوسط</td>
                             </tr>
                             <tr>
                                 <td><strong>الأداء</strong></td>
                                 <td>ممتاز ⚡⚡⚡⚡⚡</td>
                                 <td>ممتاز ⚡⚡⚡⚡⚡</td>
+                                <td>ممتاز ⚡⚡⚡⚡⚡</td>
                             </tr>
                             <tr>
                                 <td><strong>قابلية الاختبار</strong></td>
-                                <td>ممتاز (blocTest)</td>
+                                <td>ممتاز</td>
                                 <td>جيد</td>
+                                <td>ممتاز</td>
                             </tr>
                             <tr>
                                 <td><strong>الأفضل لـ</strong></td>
                                 <td>الفرق الكبيرة، العمارة الصارمة</td>
-                                <td>التطوير السريع، المنتجات القابلة للتطبيق (MVP)</td>
+                                <td>التطوير السريع</td>
+                                <td>تطبيقات قابلة للتطوير، آمنة النوع</td>
                             </tr>
                         </tbody>
                     </table>
@@ -737,20 +753,20 @@ class EmailAddress extends ValueObject&lt;String&gt; {
                 
                 <div class="grid-2">
                     <div class="card">
-                        <h3>استخدام الذاكرة (خامل)</h3>
+                        <h3>استخدام الذاكرة (الأولي)</h3>
                         <ul class="stat-list">
-                            <li><strong>GetX:</strong> ~45MB</li>
-                            <li><strong>BLoC:</strong> ~48MB</li>
-                            <li><strong>Provider:</strong> ~46MB</li>
+                            <li><strong>BLoC:</strong> ~45MB</li>
+                            <li><strong>Riverpod:</strong> ~46MB</li>
+                            <li><strong>GetX:</strong> ~48MB</li>
                         </ul>
-                        <p class="note">GetX أخف قليلاً بسبب عدم وجود Streams.</p>
+                        <p class="note">BLoC أخف قليلاً في البداية.</p>
                     </div>
                     <div class="card">
                         <h3>وقت البدء البارد</h3>
                         <ul class="stat-list">
-                            <li><strong>GetX:</strong> ~400ms</li>
-                            <li><strong>BLoC:</strong> ~420ms</li>
-                            <li><strong>Provider:</strong> ~410ms</li>
+                            <li><strong>GetX:</strong> ~820ms</li>
+                            <li><strong>Riverpod:</strong> ~830ms</li>
+                            <li><strong>BLoC:</strong> ~850ms</li>
                         </ul>
                         <p class="note">الفروق ضئيلة بالنسبة لمعظم التطبيقات.</p>
                     </div>
@@ -761,7 +777,7 @@ class EmailAddress extends ValueObject&lt;String&gt; {
                 <div class="section-header">
                     <h2>تجربة المطور</h2>
                 </div>
-                <div class="grid-2">
+                <div class="grid-3">
                     <div class="card">
                         <h3>تجربة BLoC</h3>
                         <ul>
@@ -776,6 +792,14 @@ class EmailAddress extends ValueObject&lt;String&gt; {
                             <li>✅ <strong>السرعة:</strong> سريع جداً لكتابة الميزات. كود أقل.</li>
                             <li>✅ <strong>الكل في واحد:</strong> يشمل التنقل، الحوارات، Snackbars، إلخ.</li>
                             <li>❌ <strong>السحر:</strong> قد يكون من الصعب تصحيح سلوك "السحر".</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>تجربة Riverpod</h3>
+                        <ul>
+                            <li>✅ <strong>الأمان:</strong> أمان وقت التجميع يمنع أخطاء التشغيل الشائعة.</li>
+                            <li>✅ <strong>المرونة:</strong> سهولة دمج وتكوين المزودات.</li>
+                            <li>❌ <strong>التعقيد:</strong> منحنى تعلم للمعدلات وتوليد الكود.</li>
                         </ul>
                     </div>
                 </div>
@@ -884,6 +908,12 @@ class EmailAddress extends ValueObject&lt;String&gt; {
                         <div class="accordion-header">لم يتم العثور على BLoC/Cubit في السياق</div>
                         <div class="accordion-content">
                             <p>تأكد من أنك قمت بتغليف شجرة الأدوات الخاصة بك بـ <code>BlocProvider</code>. إذا كنت تنتقل إلى مسار جديد، مرر BLoC الموجود باستخدام <code>BlocProvider.value</code>.</p>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <div class="accordion-header">لم يتم العثور على مزود Riverpod</div>
+                        <div class="accordion-content">
+                            <p>تأكد من تغليف الأداة الجذرية بـ <code>ProviderScope</code>. هذا مطلوب لعمل Riverpod.</p>
                         </div>
                     </div>
                     <div class="accordion-item">
