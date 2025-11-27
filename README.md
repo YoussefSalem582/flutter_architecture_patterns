@@ -95,7 +95,7 @@ A comprehensive collection of Flutter projects demonstrating **four different ar
 
 ## 🔄 State Management Options
 
-This repository provides **TWO complete implementations** of each pattern:
+This repository provides **THREE complete implementations** of each pattern:
 
 ### 📂 BLoC Folder (`/bloc/`)
 - **State Management**: BLoC/Cubit with flutter_bloc
@@ -108,6 +108,12 @@ This repository provides **TWO complete implementations** of each pattern:
 - **Persistence**: GetStorage
 - **Approach**: Observer pattern with reactive variables
 - **Best For**: Rapid development, smaller teams, simpler syntax
+
+### 📂 Riverpod Folder (`/riverpod/`)
+- **State Management**: Riverpod Providers
+- **Persistence**: Riverpod Persistence
+- **Approach**: Provider graph with compile-time safety
+- **Best For**: Modern scalable apps, type safety, composition
 
 **See:** [STATE_MANAGEMENT_COMPARISON.md](./tech_readme_files/STATE_MANAGEMENT_COMPARISON.md) for comprehensive comparison
 - 📊 Quick comparison & decision guide
@@ -247,17 +253,17 @@ This allows you to:
 
 ### State Management Solutions
 
-| Feature | BLoC | GetX |
-|---------|------|------|
-| **Learning Curve** | Steep (3-6 months) | Easy (1 month) |
-| **Code Amount** | More (Verbose) | Less (64% reduction) |
-| **Performance** | Excellent ⚡⚡⚡⚡⚡ | Excellent ⚡⚡⚡⚡⚡ |
-| **Memory Usage** | Lower (~68 MB) | Slightly Higher (~72 MB) |
-| **Testability** | Excellent (blocTest) | Good |
-| **Boilerplate** | High | Low |
-| **Type Safety** | Excellent | Good |
-| **DI & Routing** | External packages | Built-in |
-| **Best For** | Large teams, complex state | Rapid development, MVPs |
+| Feature | BLoC | GetX | Riverpod |
+|---------|------|------|----------|
+| **Learning Curve** | Steep (3-6 months) | Easy (1 month) | Moderate (2-3 months) |
+| **Code Amount** | More (Verbose) | Less (64% reduction) | Moderate |
+| **Performance** | Excellent ⚡⚡⚡⚡⚡ | Excellent ⚡⚡⚡⚡⚡ | Excellent ⚡⚡⚡⚡⚡ |
+| **Memory Usage** | Lower (~68 MB) | Slightly Higher (~72 MB) | Low (~69 MB) |
+| **Testability** | Excellent (blocTest) | Good | Excellent |
+| **Boilerplate** | High | Low | Moderate |
+| **Type Safety** | Excellent | Good | Excellent |
+| **DI & Routing** | External packages | Built-in | Built-in DI / External Routing |
+| **Best For** | Large teams, complex state | Rapid development, MVPs | Modern scalable apps |
 
 See **[STATE_MANAGEMENT_COMPARISON.md](./tech_readme_files/STATE_MANAGEMENT_COMPARISON.md)** for detailed analysis.
 
@@ -517,6 +523,14 @@ flutter test
 - **equatable**: 2.0.5 (Value equality)
 - **dartz**: 0.10.1 (Functional programming - Clean & DDD only)
 - **uuid**: 4.2.1 (Unique identifiers - DDD only)
+
+#### Riverpod Folder (`/riverpod/`):
+- **flutter_riverpod**: 2.4.9 (State management)
+- **riverpod_annotation**: 2.3.3 (Code generation)
+- **freezed_annotation**: 2.4.1 (Immutable data classes)
+- **shared_preferences**: 2.2.2 (Local storage)
+- **equatable**: 2.0.5 (Value equality)
+- **dartz**: 0.10.1 (Functional programming - Clean & DDD only)
 
 ### Additional Packages:
 - **cupertino_icons**: 1.0.8 (iOS-style icons)

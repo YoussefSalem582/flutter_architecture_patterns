@@ -194,6 +194,71 @@ class CounterView extends StatelessWidget {
 
 ---
 
+### With Riverpod
+
+**Structure:**
+```
+lib/
+├── models/          # M - Data models
+│   └── counter_model.dart
+├── views/           # V - UI
+│   └── counter_view.dart
+└── controllers/     # C - Business logic
+    └── counter_controller.dart
+```
+
+**Controller (Notifier):**
+```dart
+// controllers/counter_controller.dart
+class CounterNotifier extends Notifier<int> {
+  @override
+  int build() => 0;
+  
+  void increment() => state++;
+  void decrement() => state--;
+  void reset() => state = 0;
+}
+
+final counterProvider = NotifierProvider<CounterNotifier, int>(CounterNotifier.new);
+```
+
+**View:**
+```dart
+// views/counter_view.dart
+class CounterView extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final count = ref.watch(counterProvider);
+    
+    return Scaffold(
+      body: Center(
+        child: Text('$count', style: TextStyle(fontSize: 48)),
+      ),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            onPressed: () => ref.read(counterProvider.notifier).increment(),
+            child: Icon(Icons.add),
+          ),
+          SizedBox(height: 8),
+          FloatingActionButton(
+            onPressed: () => ref.read(counterProvider.notifier).decrement(),
+            child: Icon(Icons.remove),
+          ),
+        ],
+      ),
+    );
+  }
+}
+```
+
+**Lines of Code:** ~50
+
+**Reduction:** 28% less code than BLoC
+
+---
+
 ## 2️⃣ MVVM Pattern
 
 ### With BLoC
@@ -375,6 +440,62 @@ class CounterView extends StatelessWidget {
 
 ---
 
+### With Riverpod
+
+**ViewModel (AsyncNotifier):**
+```dart
+// viewmodels/counter_viewmodel.dart
+class CounterViewModel extends AsyncNotifier<int> {
+  @override
+  Future<int> build() async {
+    // Load initial data
+    await Future.delayed(Duration(milliseconds: 500));
+    return 0;
+  }
+  
+  void increment() {
+    state = AsyncData((state.value ?? 0) + 1);
+  }
+  
+  void decrement() {
+    state = AsyncData((state.value ?? 0) - 1);
+  }
+}
+
+final counterViewModelProvider = AsyncNotifierProvider<CounterViewModel, int>(CounterViewModel.new);
+```
+
+**View:**
+```dart
+// views/counter_view.dart
+class CounterView extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final counterState = ref.watch(counterViewModelProvider);
+    
+    return Scaffold(
+      body: counterState.when(
+        data: (count) => Center(
+          child: Text('$count', style: TextStyle(fontSize: 48)),
+        ),
+        loading: () => Center(child: CircularProgressIndicator()),
+        error: (err, stack) => Center(child: Text('Error: $err')),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => ref.read(counterViewModelProvider.notifier).increment(),
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+}
+```
+
+**Lines of Code:** ~60
+
+**Reduction:** 37% less code than BLoC
+
+---
+
 ## 3️⃣ Clean Architecture
 
 ### With BLoC
@@ -497,6 +618,52 @@ class CounterBinding extends Bindings {
 **Lines of Code:** ~120 (for counter feature)
 
 **Reduction:** 20% less code with GetX
+
+---
+
+### With Riverpod
+
+**Providers (DI):**
+```dart
+// presentation/providers/counter_providers.dart
+final counterRepositoryProvider = Provider<CounterRepository>((ref) {
+  return CounterRepositoryImpl(dataSource: ref.watch(dataSourceProvider));
+});
+
+final incrementUseCaseProvider = Provider<IncrementCounter>((ref) {
+  return IncrementCounter(ref.watch(counterRepositoryProvider));
+});
+
+final counterControllerProvider = StateNotifierProvider<CounterController, AsyncValue<Counter>>((ref) {
+  return CounterController(
+    incrementUseCase: ref.watch(incrementUseCaseProvider),
+  );
+});
+```
+
+**Controller (Presentation):**
+```dart
+// presentation/controllers/counter_controller.dart
+class CounterController extends StateNotifier<AsyncValue<Counter>> {
+  final IncrementCounter incrementUseCase;
+  
+  CounterController({required this.incrementUseCase}) 
+      : super(const AsyncValue.loading());
+      
+  Future<void> increment() async {
+    state = const AsyncValue.loading();
+    final result = await incrementUseCase();
+    result.fold(
+      (failure) => state = AsyncValue.error(failure.message, StackTrace.current),
+      (counter) => state = AsyncValue.data(counter),
+    );
+  }
+}
+```
+
+**Lines of Code:** ~130 (for counter feature)
+
+**Reduction:** 13% less code than BLoC
 
 ---
 
@@ -634,20 +801,54 @@ class CounterController extends GetxController {
 
 ---
 
+### With Riverpod
+
+**Presentation Layer (Notifier):**
+```dart
+// presentation/counter/controllers/counter_controller.dart
+class CounterNotifier extends AsyncNotifier<CounterEntity> {
+  late final IncrementCounterUseCase _incrementUseCase;
+  
+  @override
+  Future<CounterEntity> build() async {
+    _incrementUseCase = ref.watch(incrementUseCaseProvider);
+    // Load initial state
+    return CounterEntity(id: '1', value: CounterValue(0));
+  }
+  
+  Future<void> increment() async {
+    state = const AsyncValue.loading();
+    final result = await _incrementUseCase.execute();
+    result.fold(
+      (failure) => state = AsyncValue.error(failure, StackTrace.current),
+      (entity) => state = AsyncValue.data(entity),
+    );
+  }
+}
+
+final counterNotifierProvider = AsyncNotifierProvider<CounterNotifier, CounterEntity>(CounterNotifier.new);
+```
+
+**Lines of Code:** ~175 (for counter feature)
+
+**Reduction:** 12% less code than BLoC
+
+---
+
 ## 📊 Summary Comparison
 
-| Pattern | BLoC Lines | GetX Lines | Reduction |
-|---------|-----------|-----------|-----------|
-| **MVC** | ~70 | ~45 | 36% |
-| **MVVM** | ~95 | ~55 | 42% |
-| **Clean** | ~150 | ~120 | 20% |
-| **DDD** | ~200 | ~170 | 15% |
+| Pattern | BLoC Lines | GetX Lines | Riverpod Lines |
+|---------|-----------|-----------|----------------|
+| **MVC** | ~70 | ~45 | ~50 |
+| **MVVM** | ~95 | ~55 | ~60 |
+| **Clean** | ~150 | ~120 | ~130 |
+| **DDD** | ~200 | ~170 | ~175 |
 
 **Key Observations:**
-- ✅ GetX consistently requires less code
-- ✅ More complex architectures = smaller difference
-- ✅ BLoC provides more explicit type safety
-- ✅ GetX provides faster development
+- ✅ GetX is the most concise
+- ✅ Riverpod is very close to GetX in conciseness but safer
+- ✅ BLoC is the most verbose but very structured
+- ✅ All scale well with complex architectures
 
 ---
 
@@ -665,7 +866,13 @@ class CounterController extends GetxController {
 - ✅ Built-in DI and routing
 - ✅ Easier to learn and use
 
-### Both Work Well With:
+### Riverpod Strengths:
+- ✅ Compile-time safe DI
+- ✅ No BuildContext dependency
+- ✅ Great composition of providers
+- ✅ Modern and flexible
+
+### All Work Well With:
 - ✅ All architecture patterns
 - ✅ Clean Architecture principles
 - ✅ Domain-Driven Design
@@ -677,4 +884,4 @@ class CounterController extends GetxController {
 
 ---
 
-**Last Updated:** November 12, 2025
+**Last Updated:** November 27, 2025

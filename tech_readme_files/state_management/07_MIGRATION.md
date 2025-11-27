@@ -684,11 +684,11 @@ class CounterLoaded extends CounterState {
 
 ## 📊 Migration Time Estimates
 
-| App Size | BLoC → GetX | GetX → BLoC |
-|----------|-------------|-------------|
-| **Small (5-10 screens)** | 1 week | 2 weeks |
-| **Medium (10-50 screens)** | 2-4 weeks | 4-8 weeks |
-| **Large (50+ screens)** | 1-3 months | 2-4 months |
+| App Size | To GetX | To Riverpod | To BLoC |
+|----------|---------|-------------|---------|
+| **Small (5-10 screens)** | 1 week | 1-2 weeks | 2 weeks |
+| **Medium (10-50 screens)** | 2-4 weeks | 3-5 weeks | 4-8 weeks |
+| **Large (50+ screens)** | 1-3 months | 2-4 months | 2-4 months |
 
 ---
 
